@@ -100,10 +100,8 @@ InitTestScene*.unity*
 
 Library/
 Temp/
-Obj/
-Build/
-Builds/
 Logs/
 .vs/
-.vscode/
+obj/
+Build/
 .DS_Store
