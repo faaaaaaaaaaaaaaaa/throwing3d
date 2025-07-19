@@ -104,4 +104,5 @@ Logs/
 .vs/
 obj/
 Build/
-.DS_Store
+.DS_StoreLibrary/
+*.psd
