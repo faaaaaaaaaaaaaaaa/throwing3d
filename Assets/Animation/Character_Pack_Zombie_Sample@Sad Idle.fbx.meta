@@ -13,25 +13,57 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
-    optimizeGameObjects: 0
+    optimizeGameObjects: 1
     removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'mixamo.com' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'basic_rig Spine1' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Sad Idle
+      takeName: mixamo.com
+      internalID: -203655887218126122
+      firstFrame: 0
+      lastFrame: 167
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -81,8 +113,387 @@ ModelImporter:
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
-    human: []
-    skeleton: []
+    human:
+    - boneName: basic_rig
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Thigh
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Thigh
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Calf
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Calf
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Foot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Foot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Clavicle
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Clavicle
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L UpperArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig UpperArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Forearm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Forearm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Hand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Hand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Toe0
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Toe0
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Finger0
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: L_hand_grap_point
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Finger1
+      humanName: Left Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig L Finger2
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Finger0
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: R_hand_grap_point
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Finger1
+      humanName: Right Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: basic_rig R Finger2
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Character_Pack_Zombie_Sample@Sad Idle(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig
+      parentName: Character_Pack_Zombie_Sample@Sad Idle(Clone)
+      position: {x: -0.00026053563, y: 0.27134323, z: 0.0018866053}
+      rotation: {x: -0.5221919, y: 0.528595, z: 0.49583578, w: 0.44949973}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig Pelvis
+      parentName: basic_rig
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.5, y: 0.5, z: 0.49999914, w: 0.5000009}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig Spine
+      parentName: basic_rig Pelvis
+      position: {x: -0.053295996, y: -0.000105, z: 0}
+      rotation: {x: 0.021650538, y: 0.0008747595, z: -0.09863531, w: 0.99488777}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig Spine1
+      parentName: basic_rig Spine
+      position: {x: -0.132057, y: -0.000105, z: 0}
+      rotation: {x: 0.042941887, y: -0.00026601035, z: -0.19543949, w: 0.9797752}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig Neck
+      parentName: basic_rig Spine1
+      position: {x: -0.132213, y: -0.0114750005, z: 0}
+      rotation: {x: -0.017679064, y: -0.0018976869, z: 0.0006968185, w: 0.9998417}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig Head
+      parentName: basic_rig Neck
+      position: {x: -0.051422, y: 0, z: 0}
+      rotation: {x: -0, y: -0, z: 0.00039880772, w: 0.99999994}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Clavicle
+      parentName: basic_rig Spine1
+      position: {x: -0.097931005, y: -0.032242, z: 0.033819}
+      rotation: {x: -0.6044467, y: 0.028197644, z: 0.79212326, w: -0.07993689}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L UpperArm
+      parentName: basic_rig L Clavicle
+      position: {x: -0.073148996, y: 0, z: 0}
+      rotation: {x: -0.010373036, y: 0.14550221, z: -0.035790488, w: 0.988656}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Forearm
+      parentName: basic_rig L UpperArm
+      position: {x: -0.108404994, y: 0, z: 0}
+      rotation: {x: -0.000000029381793, y: 0.0002550808, z: 0.030938204, w: 0.99952126}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Hand
+      parentName: basic_rig L Forearm
+      position: {x: -0.11165699, y: 0, z: 0}
+      rotation: {x: 0.92156345, y: -0.17414065, z: -0.035346013, w: -0.3451762}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Finger0
+      parentName: basic_rig L Hand
+      position: {x: -0.030959, y: -0.005252, z: -0.026663998}
+      rotation: {x: -0.07481273, y: -0.24372149, z: -0.08037574, w: 0.9636092}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Finger1
+      parentName: basic_rig L Hand
+      position: {x: -0.09509599, y: 0.001327, z: -0.00834}
+      rotation: {x: -0.00039793507, y: 0, z: -0, w: 0.99999994}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Finger2
+      parentName: basic_rig L Hand
+      position: {x: -0.082579, y: 0.0015520001, z: 0.02471}
+      rotation: {x: -0.00038252582, y: 0.2795928, z: -0.00011098088, w: 0.9601186}
+      scale: {x: 1, y: 1, z: 1}
+    - name: L_hand_grap_point
+      parentName: basic_rig L Hand
+      position: {x: -0.055697996, y: 0.027758999, z: 0.0000050000003}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.2628, y: 0.2628, z: 0.2628}
+    - name: basic_rig R Clavicle
+      parentName: basic_rig Spine1
+      position: {x: -0.097931005, y: -0.032242, z: -0.033819}
+      rotation: {x: 0.5802375, y: -0.00963719, z: 0.81240225, w: -0.056870516}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig UpperArm
+      parentName: basic_rig R Clavicle
+      position: {x: -0.073148996, y: 0, z: 0}
+      rotation: {x: 0.036890976, y: -0.1352753, z: -0.061710726, w: 0.9881961}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Forearm
+      parentName: basic_rig UpperArm
+      position: {x: -0.108404994, y: 0, z: 0}
+      rotation: {x: 0.000000017118506, y: -0.000004263768, z: 0.0005174336, w: 0.9999999}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Hand
+      parentName: basic_rig R Forearm
+      position: {x: -0.11165699, y: 0, z: 0}
+      rotation: {x: 0.9155273, y: -0.18100983, z: 0.07988864, w: 0.350233}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Finger0
+      parentName: basic_rig R Hand
+      position: {x: -0.030959, y: -0.005252, z: 0.026663998}
+      rotation: {x: 0.07481273, y: 0.24372149, z: -0.08037574, w: 0.9636092}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Finger1
+      parentName: basic_rig R Hand
+      position: {x: -0.09509599, y: 0.001327, z: 0.00834}
+      rotation: {x: 0.00039793507, y: -0, z: -0, w: 0.99999994}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Finger2
+      parentName: basic_rig R Hand
+      position: {x: -0.082579, y: 0.0015520001, z: -0.02471}
+      rotation: {x: 0.00038252582, y: -0.2795928, z: -0.00011098088, w: 0.9601186}
+      scale: {x: 1, y: 1, z: 1}
+    - name: R_hand_grap_point
+      parentName: basic_rig R Hand
+      position: {x: -0.055697996, y: 0.027758999, z: -0.000006}
+      rotation: {x: 1, y: -1.5230871e-12, z: 0.0000008726646, w: 0.0000017453292}
+      scale: {x: -0.2628, y: -0.2628, z: -0.2628}
+    - name: basic_rig L Thigh
+      parentName: basic_rig Pelvis
+      position: {x: -0, y: 0, z: 0.06581999}
+      rotation: {x: -0.0711682, y: 0.99237585, z: 0.07686846, w: 0.0649344}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Calf
+      parentName: basic_rig L Thigh
+      position: {x: -0.128457, y: 0, z: 0}
+      rotation: {x: 0.08912026, y: -0.025286721, z: 0.32535085, w: 0.9410447}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Foot
+      parentName: basic_rig L Calf
+      position: {x: -0.116537996, y: 0, z: 0}
+      rotation: {x: 0.04577619, y: 0.04061009, z: -0.22159158, w: 0.9732176}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig L Toe0
+      parentName: basic_rig L Foot
+      position: {x: -0.038558, y: 0.038213998, z: 0}
+      rotation: {x: -0, y: 0, z: -0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Thigh
+      parentName: basic_rig Pelvis
+      position: {x: -0, y: 0, z: -0.06581999}
+      rotation: {x: -0.070798084, y: 0.99657726, z: -0.04092737, w: -0.012093675}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Calf
+      parentName: basic_rig R Thigh
+      position: {x: -0.128457, y: 0, z: 0}
+      rotation: {x: -0.09163132, y: 0.017509153, z: 0.27464613, w: 0.9570092}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Foot
+      parentName: basic_rig R Calf
+      position: {x: -0.116537996, y: 0, z: 0}
+      rotation: {x: -0.09293868, y: 0.015170502, z: -0.16571252, w: 0.9816678}
+      scale: {x: 1, y: 1, z: 1}
+    - name: basic_rig R Toe0
+      parentName: basic_rig R Foot
+      position: {x: -0.038558, y: 0.038213998, z: 0}
+      rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -93,13 +504,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
