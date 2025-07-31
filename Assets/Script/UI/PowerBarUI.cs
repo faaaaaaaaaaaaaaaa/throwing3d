@@ -2,18 +2,15 @@ using UnityEngine;
 
 public class PowerBarUI : MonoBehaviour
 {
-    [SerializeField] private Canvas _humanPowerBar;
-    [SerializeField] private Canvas _zombiePowerBar;
+    [SerializeField] private GameObject _humanPowerBar;
+    [SerializeField] private GameObject _zombiePowerBar;
+    [SerializeField] private GameObject _humanTimeWarning;
+    [SerializeField] private GameObject _zombieTimeWarning;
 
-    public void ShowHumanPowerBar(bool show)
-    {
-        if (_humanPowerBar) _humanPowerBar.enabled = show;
-        else gameObject.SetActive(show); 
-    } 
-    public void ShowZombiePowerBar(bool show)
-    {
-        if (_zombiePowerBar) _zombiePowerBar.enabled = show;
-        else gameObject.SetActive(show); 
-    } 
+    public void ShowHumanPowerBar(bool show) => _humanPowerBar?.SetActive(show);
+    public void ShowZombiePowerBar(bool show) => _zombiePowerBar?.SetActive(show);
+
+    public void ShowHumanTimeWarning(bool show) => _humanTimeWarning?.SetActive(show);
+    public void ShowZombieTimeWarning(bool show) => _zombieTimeWarning?.SetActive(show);
 
 }

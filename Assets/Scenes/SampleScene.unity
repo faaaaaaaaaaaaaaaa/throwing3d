@@ -5336,7 +5336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &357765579
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10376,7 +10376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &632256107
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21493,7 +21493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1340016210
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29379,6 +29379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1799548868}
   - component: {fileID: 1799548867}
+  - component: {fileID: 1799548869}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -29428,6 +29429,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1799548869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799548866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4adeb143b29e48b1a458f293d47373f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _humanPowerBar: {fileID: 1340016209}
+  _zombiePowerBar: {fileID: 1952786295}
+  _humanTimeWarning: {fileID: 632256106}
+  _zombieTimeWarning: {fileID: 357765578}
 --- !u!1001 &1801529316
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32288,7 +32305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1952786296
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33942,7 +33959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2085814302
 RectTransform:
   m_ObjectHideFlags: 0
