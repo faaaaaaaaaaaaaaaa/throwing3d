@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4566668196218320594}
   - component: {fileID: 3616857331446112909}
   - component: {fileID: -8688399270186289765}
+  - component: {fileID: 2918181023215025288}
   m_Layer: 0
   m_Name: H_Pot_05
   m_TagString: Item
@@ -134,3 +135,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2918181023215025288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4968441030427803116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf405f9e93d44d4e9eb66a19fcc10cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ownerTag: Human

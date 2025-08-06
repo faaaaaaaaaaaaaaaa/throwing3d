@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4410108831336559829}
   - component: {fileID: 2807695395684255613}
   - component: {fileID: 722361522664184883}
+  - component: {fileID: 7448019058574944492}
   m_Layer: 0
   m_Name: Z_Book_04
   m_TagString: Item
@@ -105,3 +106,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.39964682, y: 0.019675601, z: 0.21895334}
   m_Center: {x: 5.1649e-26, y: 0.009837801, z: 0}
+--- !u!114 &7448019058574944492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6676018739594086305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf405f9e93d44d4e9eb66a19fcc10cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ownerTag: Zombie

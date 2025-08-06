@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2415471528517223213}
   - component: {fileID: 2762685658559974522}
   - component: {fileID: 1356662036043149875}
+  - component: {fileID: 1938143509560850112}
   m_Layer: 0
   m_Name: Z_GenericPillow_01
   m_TagString: Item
@@ -106,3 +107,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2130177522680405252, guid: 5ca4858b71c0e8046b28378e5ad53b46, type: 3}
+--- !u!114 &1938143509560850112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240059046280538474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf405f9e93d44d4e9eb66a19fcc10cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ownerTag: Zombie

@@ -891,7 +891,7 @@ GameObject:
   - component: {fileID: 40392480}
   m_Layer: 0
   m_Name: Wall1_1 (5)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1066,6 +1066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5f0d7cefa014ef98c5cb55d52eb8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _zombieHandSpawnPoint: {fileID: 1783290712737481700}
   _humanHandSpawnPoint: {fileID: 1745304059106904914}
   _humanItemPrefabs:
   - {fileID: 4174530361657053955, guid: d63605e95c20d435cba490c8b918bab0, type: 3}
@@ -1073,6 +1074,12 @@ MonoBehaviour:
   - {fileID: 5642343455000842843, guid: 0e0f3833772bc4211a78b57fc7e773c4, type: 3}
   - {fileID: 4968441030427803116, guid: c64d020f553bc431db2b97ab39a4b661, type: 3}
   - {fileID: 6034369607596108639, guid: 6438dee54a76e41a685b5d7514f18ae6, type: 3}
+  _zombieItemPrefabs:
+  - {fileID: 3706683788842665127, guid: 73830a126b930494e929ac6d25fa53b7, type: 3}
+  - {fileID: 5867360300969143681, guid: 426d4f7d4fc274fc19c28eeb4502935c, type: 3}
+  - {fileID: 6676018739594086305, guid: 71555c66c18774a24a166eeacb251131, type: 3}
+  - {fileID: 1240059046280538474, guid: 8743216b1b6b64980b09c2de39189b62, type: 3}
+  - {fileID: 2392750179987188137, guid: ac16e0fc9778c4c8aa1b17e0eaf0d374, type: 3}
   _minThrowPower: 2
   _maxThrowPower: 8
   _chargeSpeed: 12
@@ -1251,7 +1258,7 @@ GameObject:
   - component: {fileID: 56422138}
   m_Layer: 0
   m_Name: Door1 (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2270,7 +2277,7 @@ GameObject:
   - component: {fileID: 121350654}
   m_Layer: 0
   m_Name: Wall1_1 (8)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2634,7 +2641,7 @@ GameObject:
   - component: {fileID: 166181091}
   m_Layer: 0
   m_Name: Wall1_1 (7)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2740,7 +2747,7 @@ GameObject:
   - component: {fileID: 169904195}
   m_Layer: 0
   m_Name: Floor5_p1 (3)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3807,7 +3814,7 @@ GameObject:
   - component: {fileID: 225689903}
   m_Layer: 0
   m_Name: Wall1_2 (6)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4324,7 +4331,7 @@ GameObject:
   - component: {fileID: 265720919}
   m_Layer: 0
   m_Name: Wall1_1 (7)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5673,7 +5680,7 @@ GameObject:
   - component: {fileID: 378122002}
   m_Layer: 0
   m_Name: Door1 (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6021,7 +6028,7 @@ GameObject:
   - component: {fileID: 395069916}
   m_Layer: 0
   m_Name: House_Angle (3)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7283,7 +7290,7 @@ GameObject:
   - component: {fileID: 460425079}
   m_Layer: 0
   m_Name: Floor5_p2 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7867,7 +7874,7 @@ GameObject:
   - component: {fileID: 503782880}
   m_Layer: 0
   m_Name: Floor2
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8313,7 +8320,7 @@ GameObject:
   - component: {fileID: 511092666}
   m_Layer: 0
   m_Name: Wall1_1 (5)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8962,7 +8969,7 @@ GameObject:
   - component: {fileID: 538579489}
   m_Layer: 0
   m_Name: Wall1_1 (4)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9176,7 +9183,7 @@ GameObject:
   - component: {fileID: 548899132}
   m_Layer: 0
   m_Name: Wall1_2 (7)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9477,7 +9484,7 @@ GameObject:
   - component: {fileID: 574128209}
   m_Layer: 0
   m_Name: Floor5_p2 (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10634,7 +10641,7 @@ GameObject:
   - component: {fileID: 624556920}
   m_Layer: 0
   m_Name: Wall1_2 (4)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10822,7 +10829,7 @@ GameObject:
   - component: {fileID: 639544146}
   m_Layer: 0
   m_Name: Wall1_2 (7)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11258,6 +11265,61 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0019208438, y: 0.001525246, z: 0.0017094436}
   m_Center: {x: 0.000000013038516, y: 0.000000027037403, z: 0.00085472164}
+--- !u!1 &665647476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 665647477}
+  - component: {fileID: 665647478}
+  m_Layer: 0
+  m_Name: HumanBodyCollider
+  m_TagString: Body
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &665647477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665647476}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.291, z: 0}
+  m_LocalScale: {x: 0.265625, y: 0.29882812, z: 0.25}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4607193314445508949}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &665647478
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665647476}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &669308539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12343,7 +12405,7 @@ GameObject:
   - component: {fileID: 707959839}
   m_Layer: 0
   m_Name: Wall1_1 (6)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12583,7 +12645,7 @@ GameObject:
   - component: {fileID: 720322427}
   m_Layer: 0
   m_Name: Wall1_2 (5)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12903,7 +12965,7 @@ GameObject:
   - component: {fileID: 740801778}
   m_Layer: 0
   m_Name: Floor5_p1 (4)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15379,7 +15441,7 @@ GameObject:
   - component: {fileID: 894117451}
   m_Layer: 0
   m_Name: Floor2 (4)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15539,7 +15601,7 @@ GameObject:
   - component: {fileID: 904254369}
   m_Layer: 0
   m_Name: Floor5_p1 (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15646,7 +15708,7 @@ GameObject:
   - component: {fileID: 911228474}
   m_Layer: 0
   m_Name: Wall1_2 (5)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15861,7 +15923,7 @@ GameObject:
   - component: {fileID: 922534290}
   m_Layer: 0
   m_Name: Wall1_2 (4)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16435,7 +16497,7 @@ GameObject:
   - component: {fileID: 954076902}
   m_Layer: 0
   m_Name: Wall1_4 (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17135,7 +17197,7 @@ GameObject:
   - component: {fileID: 970088907}
   m_Layer: 0
   m_Name: Wall1_1 (4)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17241,7 +17303,7 @@ GameObject:
   - component: {fileID: 976562672}
   m_Layer: 0
   m_Name: House_Angle (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19342,7 +19404,7 @@ GameObject:
   - component: {fileID: 1142185777}
   m_Layer: 0
   m_Name: Door1 (3)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20786,7 +20848,7 @@ GameObject:
   - component: {fileID: 1256003342}
   m_Layer: 0
   m_Name: Floor5_p2 (3)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21512,6 +21574,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
   m_PrefabInstance: {fileID: 1279201477}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1279870166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1279870167}
+  - component: {fileID: 1279870168}
+  m_Layer: 0
+  m_Name: HumanHeadCollider
+  m_TagString: Head
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1279870167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279870166}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.831, z: 0.002}
+  m_LocalScale: {x: 0.460225, y: 0.460225, z: 0.460225}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4607193314445508949}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1279870168
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279870166}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1291960488
 GameObject:
   m_ObjectHideFlags: 0
@@ -23453,7 +23568,7 @@ GameObject:
   - component: {fileID: 1403643090}
   m_Layer: 0
   m_Name: Wall1_2 (6)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26223,7 +26338,7 @@ GameObject:
   - component: {fileID: 1553038421}
   m_Layer: 0
   m_Name: Wall1_4
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26760,7 +26875,7 @@ GameObject:
   - component: {fileID: 1582686004}
   m_Layer: 0
   m_Name: Door1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26899,7 +27014,7 @@ GameObject:
   - component: {fileID: 1595593646}
   m_Layer: 0
   m_Name: Floor2 (6)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27299,7 +27414,7 @@ GameObject:
   - component: {fileID: 1632541326}
   m_Layer: 0
   m_Name: Floor2 (5)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27788,6 +27903,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0004257589, y: 0.0018185015, z: 0.0021289329}
   m_Center: {x: 0.00000003762376, y: 0.000000023748726, z: 0.0010645204}
+--- !u!1 &1656903287
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1656903288}
+  - component: {fileID: 1656903289}
+  m_Layer: 0
+  m_Name: ZombieHeadCollider
+  m_TagString: Head
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1656903288
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656903287}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.814, z: 0.018}
+  m_LocalScale: {x: 0.42929, y: 0.42929, z: 0.42929}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4968241570102990718}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1656903289
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656903287}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1673146732
 GameObject:
   m_ObjectHideFlags: 0
@@ -27797,6 +27965,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1673146733}
+  - component: {fileID: 1673146734}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -27819,6 +27988,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1673146734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673146732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19709d09152c944b9b146bec12972ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _humanStartHp: 5
+  _zombieStartHp: 5
+  _headshotDamage: 2
+  _bodyshotDamage: 1
+  _humanHpSlider: {fileID: 3079193282276783826}
+  _zombieHpSlider: {fileID: 2854119954963199182}
 --- !u!1 &1675267627
 GameObject:
   m_ObjectHideFlags: 0
@@ -28841,7 +29028,7 @@ GameObject:
   - component: {fileID: 1738352760}
   m_Layer: 0
   m_Name: Floor2 (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30165,7 +30352,7 @@ GameObject:
   - component: {fileID: 1779799423}
   m_Layer: 0
   m_Name: House_Angle (3)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31483,7 +31670,7 @@ GameObject:
   - component: {fileID: 1846751651}
   m_Layer: 0
   m_Name: Floor2 (3)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32576,7 +32763,7 @@ GameObject:
   - component: {fileID: 1913808075}
   m_Layer: 0
   m_Name: Floor2 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32917,7 +33104,7 @@ GameObject:
   - component: {fileID: 1922149082}
   m_Layer: 0
   m_Name: Floor5_p1 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34763,7 +34950,7 @@ GameObject:
   - component: {fileID: 2040996678}
   m_Layer: 0
   m_Name: Floor5_p2 (4)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34869,7 +35056,7 @@ GameObject:
   - component: {fileID: 2046316351}
   m_Layer: 0
   m_Name: Wall1_1 (6)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35113,6 +35300,61 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: e0e851c58997b9c438fae494e3412749, type: 3}
   m_PrefabInstance: {fileID: 2078535468}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2080374672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2080374673}
+  - component: {fileID: 2080374674}
+  m_Layer: 0
+  m_Name: ZombieBodyCollider
+  m_TagString: Body
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2080374673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080374672}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.291, z: 0}
+  m_LocalScale: {x: 0.265625, y: 0.29882812, z: 0.25}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4968241570102990718}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2080374674
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080374672}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2085814301
 GameObject:
   m_ObjectHideFlags: 0
@@ -35420,7 +35662,7 @@ GameObject:
   - component: {fileID: 2097472024}
   m_Layer: 0
   m_Name: House_Angle (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36730,7 +36972,7 @@ GameObject:
   - component: {fileID: 2144635623}
   m_Layer: 0
   m_Name: Floor2 (7)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37783,6 +38025,8 @@ Transform:
   m_Children:
   - {fileID: 2372654319086118870}
   - {fileID: 983170934762654102}
+  - {fileID: 1279870167}
+  - {fileID: 665647477}
   m_Father: {fileID: 1700226139}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &4725727910843101162
@@ -37797,7 +38041,7 @@ GameObject:
   - component: {fileID: 508285787243071721}
   - component: {fileID: 527612671633951973}
   m_Layer: 0
-  m_Name: Fill
+  m_Name: ZombieHpFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38346,6 +38590,8 @@ Transform:
   m_Children:
   - {fileID: 4968241570102990662}
   - {fileID: 6011031243151737010}
+  - {fileID: 1656903288}
+  - {fileID: 2080374673}
   m_Father: {fileID: 1700226139}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &4968241570103347968
@@ -38846,7 +39092,7 @@ GameObject:
   - component: {fileID: 1903152173969577705}
   - component: {fileID: 4173521130358789081}
   m_Layer: 0
-  m_Name: Fill
+  m_Name: HumanHPFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38903,7 +39149,7 @@ GameObject:
   - component: {fileID: 6714794650771793808}
   - component: {fileID: 3079193282276783826}
   m_Layer: 0
-  m_Name: HumanProgress Bar Violet
+  m_Name: HumanHpSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39000,7 +39246,7 @@ GameObject:
   - component: {fileID: 304152104307702404}
   - component: {fileID: 2854119954963199182}
   m_Layer: 0
-  m_Name: ZombieProgress Bar Yellow
+  m_Name: ZombieHPSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

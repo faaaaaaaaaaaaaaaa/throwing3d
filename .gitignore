@@ -106,3 +106,5 @@ obj/
 Build/
 .DS_StoreLibrary/
 *.psd
+
+.fake

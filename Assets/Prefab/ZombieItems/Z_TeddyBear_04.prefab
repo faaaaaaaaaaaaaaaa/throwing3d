@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2815782331982585974}
   - component: {fileID: 6131911451432249707}
   - component: {fileID: 3041595664032680196}
+  - component: {fileID: -3114411260601069200}
   m_Layer: 0
   m_Name: Z_TeddyBear_04
   m_TagString: Item
@@ -106,3 +107,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -4108983400281840599, guid: 5b2ec9ccce360334aafcfa3ff103e7d9, type: 3}
+--- !u!114 &-3114411260601069200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2392750179987188137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf405f9e93d44d4e9eb66a19fcc10cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ownerTag: Zombie
