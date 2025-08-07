@@ -1083,7 +1083,8 @@ MonoBehaviour:
   _minThrowPower: 2
   _maxThrowPower: 8
   _chargeSpeed: 12
-  _throwAngleY: 6
+  _throwAngleY: 300
+  windEffect: 2
   _isHuman: 1
   _powerBarUI: {fileID: 1799548869}
 --- !u!4 &49220831
@@ -19418,7 +19419,7 @@ Transform:
   m_GameObject: {fileID: 1142185773}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: -0.7071068}
-  m_LocalPosition: {x: -3.88, y: 0.002, z: -2.575}
+  m_LocalPosition: {x: -3.88, y: 0.002, z: -2.534}
   m_LocalScale: {x: 25.05206, y: 80.51268, z: 6.7997494}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33197,6 +33198,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.02002587, z: 0.0009430364}
   m_Center: {x: 0.0000000018626451, y: 0.000009688547, z: 0.0004715182}
+--- !u!1 &1929611168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1929611170}
+  - component: {fileID: 1929611169}
+  m_Layer: 0
+  m_Name: WIndManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1929611169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929611168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be906fbeac59d4952ada20f09895db75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillLeft: {fileID: 20290138}
+  fillRight: {fileID: 1229319688}
+  fillImageLeft: {fileID: 1256446206}
+  fillImageRight: {fileID: 1764328443}
+  arrowLeft: {fileID: 524641623}
+  arrowRight: {fileID: 978718639}
+  textWind: {fileID: 1270180477}
+  windDirection: 0
+  windForce: 0
+--- !u!4 &1929611170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929611168}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1936797826
 GameObject:
   m_ObjectHideFlags: 0
@@ -39968,3 +40022,4 @@ SceneRoots:
   - {fileID: 2099797958}
   - {fileID: 1673146733}
   - {fileID: 49220831}
+  - {fileID: 1929611170}
