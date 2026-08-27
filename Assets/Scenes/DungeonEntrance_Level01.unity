@@ -4565,7 +4565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &330370469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4580,6 +4580,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ThrowManager
   _zombieHandSpawnPoint: {fileID: 0}
   _humanHandSpawnPoint: {fileID: 0}
+  _playerThrowPointTag: PlayerLeft_Hand
+  _enemyThrowPointTag: PlayerRight_Hand
   _humanItemPrefabs:
   - {fileID: 1456645844451485982, guid: 676a92f90e9314ec29847c7eaeb88d29, type: 3}
   - {fileID: 3136309936477928398, guid: 410b8db7636594cd68ce7c9539d023c6, type: 3}
@@ -19593,17 +19595,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5f0d7cefa014ef98c5cb55d52eb8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThrowManager
-  _zombieHandSpawnPoint: {fileID: 1899739345}
-  _humanHandSpawnPoint: {fileID: 1377559313}
+  _zombieHandSpawnPoint: {fileID: 1599576111}
+  _humanHandSpawnPoint: {fileID: 156734887}
+  _playerThrowPointTag: PlayerLeft_Hand
+  _enemyThrowPointTag: PlayerRight_Hand
   _humanItemPrefabs:
-  - {fileID: 7830481692396427286, guid: e6a6f4c70bf754d44a919bd0105d575e, type: 3}
-  - {fileID: 7952095897156923208, guid: 3ccb84431fb7c4570aba6f5a1cf3cdb4, type: 3}
-  - {fileID: 3418446530084517309, guid: 96f81c2c1c955414e9ce39123785c871, type: 3}
-  _zombieItemPrefabs:
-  - {fileID: 102524460793615637, guid: a0ba6f97cf96b4134a1228000d17959d, type: 3}
-  - {fileID: 7621016048514827427, guid: be69457dce62a472da16b510481c635f, type: 3}
-  - {fileID: 313236033298747270, guid: 4e2c1e0f82dfc4f19bc8391fee512cf4, type: 3}
-  - {fileID: 3297173548793766844, guid: f56fce9b4a3364b47be555f345ad2cf5, type: 3}
+  - {fileID: 1456645844451485982, guid: 676a92f90e9314ec29847c7eaeb88d29, type: 3}
+  - {fileID: 3136309936477928398, guid: 410b8db7636594cd68ce7c9539d023c6, type: 3}
+  - {fileID: 1024155569546849018, guid: 2c1ab62f65b694bf098497aabacb0459, type: 3}
+  - {fileID: 5807225011390764962, guid: e12ca924f08204e1b8ef6683c101c6a5, type: 3}
+  - {fileID: 6280509470627490884, guid: 6111e2ec2f2d0443bb0f1626e2e36708, type: 3}
+  _zombieItemPrefabs: []
   _minThrowPower: 4
   _maxThrowPower: 10
   _maxPullScreenFraction: 0.28

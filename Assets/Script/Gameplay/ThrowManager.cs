@@ -10,6 +10,8 @@ public class ThrowManager : MonoBehaviour
     [Header("Throw Points")]
     [SerializeField] private Transform _zombieHandSpawnPoint;
     [SerializeField] private Transform _humanHandSpawnPoint;
+    [SerializeField] private string _playerThrowPointTag = "PlayerLeft_Hand";
+    [SerializeField] private string _enemyThrowPointTag = "PlayerRight_Hand";
     [Header("Projectile Prefabs")]
     [SerializeField] private GameObject[] _humanItemPrefabs;
     [SerializeField] private GameObject[] _zombieItemPrefabs;
@@ -48,6 +50,7 @@ public class ThrowManager : MonoBehaviour
         else { Destroy(gameObject); return; }
 
         EnsureTrajectoryLine();
+        ResolveSceneReferences();
     }
 
     private void Update()
@@ -182,6 +185,7 @@ public class ThrowManager : MonoBehaviour
 
     public void ConfigureFromLevel(LevelConfig cfg)
     {
+        ResolveSceneReferences();
         _minThrowPower = cfg.minThrowPower;
         _maxThrowPower = cfg.maxThrowPower;
 
@@ -202,12 +206,15 @@ public class ThrowManager : MonoBehaviour
             return;
         }
 
+        ResolveSceneReferences();
+
         Transform spawnPoint = isPlayer ? _humanHandSpawnPoint : _zombieHandSpawnPoint;
         Transform targetPoint = isPlayer ? _zombieHandSpawnPoint : _humanHandSpawnPoint;
-        GameObject[] prefabs = isPlayer ? _humanItemPrefabs : _zombieItemPrefabs;
+        GameObject[] prefabs = GetPrefabsForSide(isPlayer);
         string ownerTag = isPlayer ? _playerTag : _enemyTag;
         if (spawnPoint == null || targetPoint == null || prefabs == null || prefabs.Length == 0)
         {
+            Debug.LogWarning("ThrowManager: missing throw points or throwable prefabs.");
             onResolved?.Invoke();
             return;
         }
@@ -218,7 +225,8 @@ public class ThrowManager : MonoBehaviour
         float maxForce = _maxThrowPower;
         if (specialType == "PowerThrow") maxForce += 3f;
 
-        var projectile = item.GetComponent<ProjectileItem>();
+        Rigidbody rb = EnsureRigidbody(item);
+        var projectile = EnsureProjectileItem(item);
         if (projectile != null)
         {
             projectile.OwnerTag = ownerTag;
@@ -228,11 +236,8 @@ public class ThrowManager : MonoBehaviour
             projectile.OnHit = (hitType, hitTag) => ApplyHit(hitType, hitTag, isPlayer, specialType);
         }
 
-        Rigidbody rb = item.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            if (rb.mass < 0.05f) rb.mass = _projectileMass;
-
             float throwForce = Mathf.Lerp(_minThrowPower, maxForce, Mathf.Clamp01(power01));
             float angle = isPlayer && _hasPlayerAim
                 ? _playerAimAngle
@@ -253,6 +258,66 @@ public class ThrowManager : MonoBehaviour
 
         _pendingResolve = onResolved;
         StartCoroutine(ResolveAfterDelay(onResolved));
+    }
+
+    private GameObject[] GetPrefabsForSide(bool isPlayer)
+    {
+        GameObject[] own = isPlayer ? _humanItemPrefabs : _zombieItemPrefabs;
+        if (own != null && own.Length > 0) return own;
+
+        // ponytail: while there are only a few throwables authored, the empty side reuses the
+        // other side's pool. Upgrade path: split to side-specific pools once art choices settle.
+        GameObject[] fallback = isPlayer ? _zombieItemPrefabs : _humanItemPrefabs;
+        return fallback != null && fallback.Length > 0 ? fallback : own;
+    }
+
+    private static ProjectileItem EnsureProjectileItem(GameObject item)
+    {
+        var projectile = item.GetComponent<ProjectileItem>();
+        return projectile != null ? projectile : item.AddComponent<ProjectileItem>();
+    }
+
+    private Rigidbody EnsureRigidbody(GameObject item)
+    {
+        var rb = item.GetComponent<Rigidbody>();
+        if (rb == null) rb = item.AddComponent<Rigidbody>();
+
+        rb.mass = Mathf.Max(0.05f, _projectileMass);
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+
+        if (item.GetComponentInChildren<Collider>() == null)
+        {
+            var col = item.AddComponent<SphereCollider>();
+            col.radius = 0.25f;
+        }
+
+        return rb;
+    }
+
+    private void ResolveSceneReferences()
+    {
+        if (_humanHandSpawnPoint == null)
+            _humanHandSpawnPoint = FindTransformWithTag(_playerThrowPointTag);
+        if (_zombieHandSpawnPoint == null)
+            _zombieHandSpawnPoint = FindTransformWithTag(_enemyThrowPointTag);
+        if (_powerBarUI == null)
+            _powerBarUI = FindAnyObjectByType<PowerBarUI>();
+    }
+
+    private static Transform FindTransformWithTag(string tagName)
+    {
+        if (string.IsNullOrWhiteSpace(tagName)) return null;
+
+        try
+        {
+            GameObject go = GameObject.FindWithTag(tagName);
+            return go != null ? go.transform : null;
+        }
+        catch (UnityException)
+        {
+            return null;
+        }
     }
 
     public static Vector3 ComputeLobDirection(Vector3 from, Vector3 toward, float lobAngleDegrees)

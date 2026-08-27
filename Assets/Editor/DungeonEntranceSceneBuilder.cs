@@ -35,8 +35,8 @@ public static class DungeonEntranceSceneBuilder
 
         var skeleton = SpawnCharacter("Enemy_Skeleton", Skeletons + "Skeleton_Warrior.prefab", new Vector3(-3.6f, 0f, 0f), 90f, "Skeleton");
         var adventurer = SpawnCharacter("Player_Adventurer", Adventurers + "Knight.prefab", new Vector3(3.6f, 0f, 0f), -90f, "Adventurer");
-        var enemyHand = CreateMarker("EnemyThrowPoint", skeleton.transform, new Vector3(0.35f, 1.25f, 0f));
-        var playerHand = CreateMarker("PlayerThrowPoint", adventurer.transform, new Vector3(-0.35f, 1.25f, 0f));
+        var enemyHand = CreateMarker("EnemyThrowPoint", skeleton.transform, new Vector3(0.35f, 1.25f, 0f), "PlayerRight_Hand");
+        var playerHand = CreateMarker("PlayerThrowPoint", adventurer.transform, new Vector3(-0.35f, 1.25f, 0f), "PlayerLeft_Hand");
 
         var playerProjectiles = new[]
         {
@@ -72,6 +72,8 @@ public static class DungeonEntranceSceneBuilder
         SetObjectField(throwManager, "_powerBarUI", ui.powerBar);
         SetStringField(throwManager, "_playerTag", "Adventurer");
         SetStringField(throwManager, "_enemyTag", "Skeleton");
+        SetStringField(throwManager, "_playerThrowPointTag", "PlayerLeft_Hand");
+        SetStringField(throwManager, "_enemyThrowPointTag", "PlayerRight_Hand");
         SetFloatField(throwManager, "_maxPullScreenFraction", 0.28f);
         SetFloatField(throwManager, "_minAimAngle", 18f);
         SetFloatField(throwManager, "_maxAimAngle", 70f);
@@ -185,9 +187,10 @@ public static class DungeonEntranceSceneBuilder
         return hitbox;
     }
 
-    private static GameObject CreateMarker(string name, Transform parent, Vector3 localPosition)
+    private static GameObject CreateMarker(string name, Transform parent, Vector3 localPosition, string tag = "Untagged")
     {
         var marker = new GameObject(name);
+        marker.tag = tag;
         marker.transform.SetParent(parent, false);
         marker.transform.localPosition = localPosition;
         return marker;
