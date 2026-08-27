@@ -18,6 +18,7 @@ public class WindManager : MonoBehaviour
     [Header("Config")]
     public WindDirection windDirection;
     public float windForce; // 0–1
+    [Range(0f, 1f)] public float maxForce = 1f; // per-level ceiling for random wind
 
     void Awake()
     {
@@ -32,21 +33,23 @@ public class WindManager : MonoBehaviour
         windDirection = dir;
         windForce = Mathf.Clamp01(force);
 
-        // hide all
-        fillLeft.SetActive(false); fillRight.SetActive(false);
-        arrowLeft.SetActive(false); arrowRight.SetActive(false);
+        // hide all (null-safe so scene wiring can be incomplete during setup)
+        if (fillLeft) fillLeft.SetActive(false);
+        if (fillRight) fillRight.SetActive(false);
+        if (arrowLeft) arrowLeft.SetActive(false);
+        if (arrowRight) arrowRight.SetActive(false);
 
         if (dir == WindDirection.Right)
         {
-            fillRight.SetActive(true);
-            arrowRight.SetActive(true);
-            fillImageRight.fillAmount = windForce;
+            if (fillRight) fillRight.SetActive(true);
+            if (arrowRight) arrowRight.SetActive(true);
+            if (fillImageRight) fillImageRight.fillAmount = windForce;
         }
         else
         {
-            fillLeft.SetActive(true);
-            arrowLeft.SetActive(true);
-            fillImageLeft.fillAmount = windForce;
+            if (fillLeft) fillLeft.SetActive(true);
+            if (arrowLeft) arrowLeft.SetActive(true);
+            if (fillImageLeft) fillImageLeft.fillAmount = windForce;
         }
 
         if (textWind) textWind.text = "WIND";
@@ -56,7 +59,7 @@ public class WindManager : MonoBehaviour
     public void RandomWind()
     {
         var dir = (UnityEngine.Random.value > 0.5f) ? WindDirection.Right : WindDirection.Left;
-        var force = UnityEngine.Random.Range(0f, 1f);
+        var force = UnityEngine.Random.Range(0f, Mathf.Clamp01(maxForce));
         SetWind(dir, force);
     }
 }

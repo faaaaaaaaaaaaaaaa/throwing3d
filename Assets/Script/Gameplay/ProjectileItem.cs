@@ -5,15 +5,31 @@ public class ProjectileItem : MonoBehaviour
     public enum HitType { Head, Body, Ground, Wall }
     public string OwnerTag;
     public System.Action<HitType, string> OnHit;
+    public Vector3 WindAcceleration;
 
-    private bool hasHit = false;
+    // Tags are populated by ThrowManager at spawn, so the projectile is theme-agnostic. Defaults
+    // suit the dungeon theme (Adventurer vs Skeleton) if used standalone.
+    public string[] SideTags = { "Adventurer", "Skeleton" };
+    public string HeadTag = "Head";
+    public string BodyTag = "Body";
+
+    private bool hasHit;
+    private Rigidbody cachedRigidbody;
+
+    private void Awake() => cachedRigidbody = GetComponent<Rigidbody>();
+
+    private void FixedUpdate()
+    {
+        if (!hasHit && cachedRigidbody != null && WindAcceleration.sqrMagnitude > 0f)
+            cachedRigidbody.AddForce(WindAcceleration, ForceMode.Acceleration);
+    }
 
     private string FindCharacterTag(Transform t)
     {
         while (t != null)
         {
-            if (t.CompareTag("Human") || t.CompareTag("Zombie"))
-                return t.tag;
+            foreach (var side in SideTags)
+                if (!string.IsNullOrEmpty(side) && t.CompareTag(side)) return t.tag;
             t = t.parent;
         }
         return null;
@@ -23,42 +39,24 @@ public class ProjectileItem : MonoBehaviour
     {
         if (hasHit) return;
 
-        // ไม่ชนตัวเอง
+        // Don't count hitting our own thrower.
         Transform t = collision.transform;
-        bool isOwner = false;
         while (t != null)
         {
-            if (t.CompareTag(OwnerTag))
-            {
-                isOwner = true;
-                break;
-            }
+            if (!string.IsNullOrEmpty(OwnerTag) && t.CompareTag(OwnerTag)) return;
             t = t.parent;
-        }
-        if (isOwner)
-        {
-            hasHit = false;
-            return;
         }
         hasHit = true;
 
         string targetCharTag = FindCharacterTag(collision.transform);
-        Debug.Log("Hit with : " + collision.gameObject.tag + " | CharacterTag: " + targetCharTag);
 
-        if (collision.gameObject.CompareTag("Head"))
-        {
+        if (collision.gameObject.CompareTag(HeadTag))
             OnHit?.Invoke(HitType.Head, targetCharTag);
-        }
-        else if (collision.gameObject.CompareTag("Body"))
-        {
+        else if (collision.gameObject.CompareTag(BodyTag))
             OnHit?.Invoke(HitType.Body, targetCharTag);
-        }
         else
-        {
             OnHit?.Invoke(HitType.Ground, targetCharTag);
-        }
-        var col = GetComponent<Collider>();
-        //if (col) col.enabled = false;
+
         Destroy(gameObject, 0.5f);
     }
 }
