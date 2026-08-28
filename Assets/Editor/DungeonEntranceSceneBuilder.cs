@@ -74,9 +74,8 @@ public static class DungeonEntranceSceneBuilder
         SetStringField(throwManager, "_enemyTag", "Skeleton");
         SetStringField(throwManager, "_playerThrowPointTag", "PlayerLeft_Hand");
         SetStringField(throwManager, "_enemyThrowPointTag", "PlayerRight_Hand");
-        SetFloatField(throwManager, "_maxPullScreenFraction", 0.28f);
-        SetFloatField(throwManager, "_minAimAngle", 18f);
-        SetFloatField(throwManager, "_maxAimAngle", 70f);
+        SetFloatField(throwManager, "_fullChargeSeconds", 1.4f);
+        SetFloatField(throwManager, "_lobAngleDegrees", 38f);
         SetFloatField(throwManager, "_windEffect", 1.8f);
 
         SetObjectField(levelManager, "_throwManager", throwManager);

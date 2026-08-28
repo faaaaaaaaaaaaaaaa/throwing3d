@@ -18,9 +18,8 @@ public class ThrowManager : MonoBehaviour
     [Header("Config")]
     [SerializeField] private float _minThrowPower = 4f;
     [SerializeField] private float _maxThrowPower = 10f;
-    [SerializeField, Range(0.1f, 0.5f)] private float _maxPullScreenFraction = 0.28f;
-    [SerializeField, Range(10f, 45f)] private float _minAimAngle = 18f;
-    [SerializeField, Range(45f, 80f)] private float _maxAimAngle = 70f;
+    [SerializeField] private float _fullChargeSeconds = 1.4f;
+    [SerializeField] private float _lobAngleDegrees = 38f;
     [SerializeField] private float _windEffect = 1.8f;
     [SerializeField] private float _projectileMass = 0.35f;
     [SerializeField] private PowerBarUI _powerBarUI;
@@ -33,15 +32,11 @@ public class ThrowManager : MonoBehaviour
     [Header("Resolve")]
     [SerializeField] private float _resolveDelay = 1.2f;
 
+    public float FullChargeSeconds => _fullChargeSeconds;
+
     private float _charge01;
     private bool _isCharging;
     private bool _chargingAsPlayer = true;
-    private Vector2 _dragStartScreen;
-    private float _aimAngleDegrees = 38f;
-    private float _playerAimAngle = 38f;
-    private float _enemyAimAngle = 38f;
-    private bool _hasPlayerAim;
-    private bool _hasEnemyAim;
     private Action _pendingResolve;
 
     private void Awake()
@@ -65,14 +60,13 @@ public class ThrowManager : MonoBehaviour
                               && TurnManager.Instance.NumPlayers == 2;
         if (!playerTurn && !enemyHumanTurn) return;
 
-        if (!TryGetPointer(out Vector2 pointerPosition, out PointerPhase pointerPhase))
+        if (!TryGetPointer(out PointerPhase pointerPhase))
             return;
 
         if (pointerPhase == PointerPhase.Began)
         {
             _isCharging = true;
             _chargingAsPlayer = playerTurn;
-            _dragStartScreen = pointerPosition;
             _charge01 = 0f;
             TurnManager.Instance.StopTimer();
             _powerBarUI?.HideTimeWarnings();
@@ -81,9 +75,12 @@ public class ThrowManager : MonoBehaviour
 
         if (_isCharging)
         {
-            UpdateDragAim(pointerPosition);
+            _charge01 = Mathf.Clamp01(_charge01 + Time.deltaTime / Mathf.Max(0.35f, _fullChargeSeconds));
             ShowChargeBar(_chargingAsPlayer, _charge01);
-            UpdateTrajectoryPreview(_chargingAsPlayer, _charge01, _aimAngleDegrees, null);
+            UpdateTrajectoryPreview(_chargingAsPlayer, _charge01, _lobAngleDegrees, null);
+
+            if (_charge01 >= 1f)
+                ConfirmCharge();
         }
 
         if (pointerPhase == PointerPhase.Ended && _isCharging)
@@ -92,12 +89,11 @@ public class ThrowManager : MonoBehaviour
 
     private enum PointerPhase { Began, Held, Ended }
 
-    private static bool TryGetPointer(out Vector2 position, out PointerPhase phase)
+    private static bool TryGetPointer(out PointerPhase phase)
     {
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            position = touch.position;
             phase = touch.phase == TouchPhase.Began
                 ? PointerPhase.Began
                 : touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled
@@ -106,7 +102,6 @@ public class ThrowManager : MonoBehaviour
             return true;
         }
 
-        position = Input.mousePosition;
         if (Input.GetMouseButtonDown(0)) phase = PointerPhase.Began;
         else if (Input.GetMouseButtonUp(0)) phase = PointerPhase.Ended;
         else if (Input.GetMouseButton(0)) phase = PointerPhase.Held;
@@ -116,34 +111,6 @@ public class ThrowManager : MonoBehaviour
             return false;
         }
         return true;
-    }
-
-    private void UpdateDragAim(Vector2 pointerPosition)
-    {
-        // Angry Birds gesture: pull opposite the throw. Pull distance controls force; pulling
-        // downward raises the launch angle.
-        Vector2 pull = _dragStartScreen - pointerPosition;
-        float maxPullPixels = Mathf.Min(Screen.width, Screen.height) * _maxPullScreenFraction;
-        ComputeDragAim(
-            pull,
-            maxPullPixels,
-            _minAimAngle,
-            _maxAimAngle,
-            out _charge01,
-            out _aimAngleDegrees);
-    }
-
-    public static void ComputeDragAim(
-        Vector2 pull,
-        float maxPullPixels,
-        float minAngle,
-        float maxAngle,
-        out float power01,
-        out float angleDegrees)
-    {
-        power01 = Mathf.Clamp01(pull.magnitude / Mathf.Max(1f, maxPullPixels));
-        float verticalShare = Mathf.Clamp01(pull.y / Mathf.Max(1f, pull.magnitude));
-        angleDegrees = Mathf.Lerp(minAngle, maxAngle, verticalShare);
     }
 
     private void ShowChargeBar(bool isPlayer, float t)
@@ -168,16 +135,6 @@ public class ThrowManager : MonoBehaviour
 
         float power = _charge01;
         bool isPlayer = _chargingAsPlayer;
-        if (isPlayer)
-        {
-            _playerAimAngle = _aimAngleDegrees;
-            _hasPlayerAim = true;
-        }
-        else
-        {
-            _enemyAimAngle = _aimAngleDegrees;
-            _hasEnemyAim = true;
-        }
         if (isPlayer) _powerBarUI?.ShowHumanPowerBar(false);
         else _powerBarUI?.ShowZombiePowerBar(false);
         TurnManager.Instance.OnPowerConfirmed(power, isPlayer);
@@ -188,6 +145,8 @@ public class ThrowManager : MonoBehaviour
         ResolveSceneReferences();
         _minThrowPower = cfg.minThrowPower;
         _maxThrowPower = cfg.maxThrowPower;
+        // Higher chargeSpeed = shorter hold window (matches original JSON curve).
+        _fullChargeSeconds = Mathf.Lerp(1.6f, 0.85f, (cfg.chargeSpeed - 12f) / 6f);
 
         StopAllCoroutines();
         _isCharging = false;
@@ -239,12 +198,7 @@ public class ThrowManager : MonoBehaviour
         if (rb != null)
         {
             float throwForce = Mathf.Lerp(_minThrowPower, maxForce, Mathf.Clamp01(power01));
-            float angle = isPlayer && _hasPlayerAim
-                ? _playerAimAngle
-                : !isPlayer && _hasEnemyAim
-                    ? _enemyAimAngle
-                    : 38f;
-            Vector3 throwDir = ComputeLobDirection(spawnPoint.position, targetPoint.position, angle);
+            Vector3 throwDir = ComputeLobDirection(spawnPoint.position, targetPoint.position, _lobAngleDegrees);
             rb.mass = _projectileMass;
             rb.AddForce(throwDir * throwForce, ForceMode.Impulse);
 

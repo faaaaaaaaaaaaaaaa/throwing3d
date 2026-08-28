@@ -35,10 +35,6 @@ public static class SelfCheck
         // Lob throws must go up-toward the target, not into the floor.
         var lob = ThrowManager.ComputeLobDirection(new Vector3(5f, 1f, 0f), new Vector3(-5f, 1f, 0f), 38f);
         Debug.Assert(lob.y > 0.25f && lob.x < 0f, "SelfCheck: player lob should arc toward enemy");
-        ThrowManager.ComputeDragAim(new Vector2(-100f, 0f), 200f, 18f, 70f, out float lowPower, out float lowAngle);
-        ThrowManager.ComputeDragAim(new Vector2(-100f, 100f), 200f, 18f, 70f, out float highPower, out float highAngle);
-        Debug.Assert(highPower > lowPower, "SelfCheck: a wider pull must produce more power");
-        Debug.Assert(highAngle > lowAngle, "SelfCheck: pulling downward must produce a higher arc");
 
         Debug.Log("[SelfCheck] passed");
     }

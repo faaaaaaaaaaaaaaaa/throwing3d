@@ -21,6 +21,8 @@ public class PowerBarUI : MonoBehaviour
     {
         EnsureFillImage(ref _humanPowerBarImage, _humanPowerBar, LowPower);
         EnsureFillImage(ref _zombiePowerBarImage, _zombiePowerBar, new Color(0.55f, 0.75f, 1f, 1f));
+        EnsureFillImage(ref _humanTimeWarningImage, _humanTimeWarning, HighPower);
+        EnsureFillImage(ref _zombieTimeWarningImage, _zombieTimeWarning, HighPower);
     }
 
     private static void EnsureFillImage(ref Image fill, GameObject barRoot, Color fallbackColor)
@@ -29,12 +31,26 @@ public class PowerBarUI : MonoBehaviour
 
         foreach (var image in barRoot.GetComponentsInChildren<Image>(true))
         {
+            if (image.name.Contains("Fill"))
+            {
+                fill = image;
+                break;
+            }
+        }
+
+        foreach (var image in barRoot.GetComponentsInChildren<Image>(true))
+        {
+            if (fill != null) break;
             if (image.gameObject == barRoot) continue;
             fill = image;
             break;
         }
 
-        if (fill != null) return;
+        if (fill != null)
+        {
+            ConfigureFillImage(fill);
+            return;
+        }
 
         var fillGo = new GameObject("PowerFill");
         fillGo.transform.SetParent(barRoot.transform, false);
@@ -45,6 +61,11 @@ public class PowerBarUI : MonoBehaviour
         rect.offsetMax = Vector2.zero;
         fill = fillGo.AddComponent<Image>();
         fill.color = fallbackColor;
+        ConfigureFillImage(fill);
+    }
+
+    private static void ConfigureFillImage(Image fill)
+    {
         fill.type = Image.Type.Filled;
         fill.fillMethod = Image.FillMethod.Horizontal;
     }

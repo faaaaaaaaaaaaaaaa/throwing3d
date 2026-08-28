@@ -206,7 +206,7 @@ public class TurnManager : MonoBehaviour
         {
             _powerBarUI.ShowZombiePowerBar(true);
             float shown = 0f;
-            const float chargeDuration = 0.8f;
+            float chargeDuration = Mathf.Max(0.35f, _throwManager.FullChargeSeconds);
             while (shown < aiPower)
             {
                 shown += Time.deltaTime / chargeDuration;
@@ -237,11 +237,11 @@ public class TurnManager : MonoBehaviour
         if (_turnText == null) return;
         if (NumPlayers == 2)
             _turnText.text = CurrentTurn == Turn.Player
-                ? "Player 1 — pull back & release"
-                : "Player 2 — pull back & release";
+                ? "Player 1 — hold to charge"
+                : "Player 2 — hold to charge";
         else
             _turnText.text = CurrentTurn == Turn.Player
-                ? "Your turn — pull back & release"
+                ? "Your turn — hold to charge & release"
                 : "Skeleton's turn…";
     }
 
