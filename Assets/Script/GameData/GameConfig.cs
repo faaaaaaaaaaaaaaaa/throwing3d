@@ -14,11 +14,11 @@ public class GameConfig : ScriptableObject
     public int missedChanceHard = 15;
 
     [Header("Damage")]
-    public int normalAttack = 8;   // head
-    public int smallAttack = 5;    // body
-    public int powerThrow = 10;
+    public int normalAttack = 6;   // head
+    public int smallAttack = 4;    // body
+    public int powerThrow = 8;
     public int doubleAttackAmount = 2;
-    public int doubleAttackDamage = 5;
+    public int doubleAttackDamage = 3;
 
     [Header("Heal / Timing")]
     public int healHP = 20;

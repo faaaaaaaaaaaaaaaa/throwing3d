@@ -26,6 +26,10 @@ public class ThrowManager : MonoBehaviour
     [SerializeField] private float _projectileMass = 0.35f;
     [SerializeField] private PowerBarUI _powerBarUI;
     [SerializeField] private LineRenderer _trajectoryLine;
+    [SerializeField] private Camera _gameplayCamera;
+    [Header("Character Animation")]
+    [SerializeField] private CharacterAnimator _playerLeftAnimator;
+    [SerializeField] private CharacterAnimator _playerRightAnimator;
     [Header("Side Tags")]
     [SerializeField] private string _playerTag = "Adventurer";
     [SerializeField] private string _enemyTag = "Skeleton";
@@ -223,11 +227,43 @@ public class ThrowManager : MonoBehaviour
         }
 
         ResolveSceneReferences();
+        CharacterAnimator characterAnimator =
+            isPlayer ? _playerLeftAnimator : _playerRightAnimator;
+        if (characterAnimator != null && characterAnimator.PlayThrow())
+        {
+            StartCoroutine(ReleaseProjectileAfterDelay(
+                isPlayer, power01, specialType, onResolved, characterAnimator.ThrowReleaseDelay));
+            return;
+        }
 
+        ReleaseProjectile(isPlayer, power01, specialType, onResolved);
+    }
+
+    private IEnumerator ReleaseProjectileAfterDelay(
+        bool isPlayer,
+        float power01,
+        string specialType,
+        Action onResolved,
+        float delay)
+    {
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+
+        ReleaseProjectile(isPlayer, power01, specialType, onResolved);
+    }
+
+    private void ReleaseProjectile(bool isPlayer, float power01, string specialType, Action onResolved)
+    {
+        if (GameManager.Instance == null || GameManager.Instance.IsGameOver)
+        {
+            onResolved?.Invoke();
+            return;
+        }
+
+        ResolveSceneReferences();
         Transform spawnPoint = isPlayer ? _humanHandSpawnPoint : _zombieHandSpawnPoint;
         Transform targetPoint = isPlayer ? _zombieHandSpawnPoint : _humanHandSpawnPoint;
         GameObject[] prefabs = GetPrefabsForSide(isPlayer);
-        string ownerTag = isPlayer ? _playerTag : _enemyTag;
         if (spawnPoint == null || targetPoint == null || prefabs == null || prefabs.Length == 0)
         {
             Debug.LogWarning("ThrowManager: missing throw points or throwable prefabs.");
@@ -235,6 +271,7 @@ public class ThrowManager : MonoBehaviour
             return;
         }
 
+        string ownerTag = isPlayer ? _playerTag : _enemyTag;
         GameObject prefab = prefabs[UnityEngine.Random.Range(0, prefabs.Length)];
         GameObject item = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
 
@@ -263,7 +300,8 @@ public class ThrowManager : MonoBehaviour
             {
                 float windSign = WindManager.Instance.windDirection == WindDirection.Right ? 1f : -1f;
                 projectile.WindAcceleration =
-                    Vector3.right * (WindManager.Instance.windForce * _windEffect * windSign);
+                    GetScreenRightDirection() *
+                    (WindManager.Instance.windForce * _windEffect * windSign);
             }
         }
 
@@ -314,6 +352,23 @@ public class ThrowManager : MonoBehaviour
             _zombieHandSpawnPoint = FindTransformWithTag(_enemyThrowPointTag);
         if (_powerBarUI == null)
             _powerBarUI = FindAnyObjectByType<PowerBarUI>();
+        if (_gameplayCamera == null)
+            _gameplayCamera = Camera.main;
+        if (_playerLeftAnimator == null)
+            _playerLeftAnimator = FindCharacterAnimator(_playerTag);
+        if (_playerRightAnimator == null)
+            _playerRightAnimator = FindCharacterAnimator(_enemyTag);
+    }
+
+    private static CharacterAnimator FindCharacterAnimator(string tagName)
+    {
+        Transform character = FindTransformWithTag(tagName);
+        if (character == null) return null;
+
+        CharacterAnimator characterAnimator = character.GetComponent<CharacterAnimator>();
+        return characterAnimator != null
+            ? characterAnimator
+            : character.gameObject.AddComponent<CharacterAnimator>();
     }
 
     private static Transform FindTransformWithTag(string tagName)
@@ -343,6 +398,15 @@ public class ThrowManager : MonoBehaviour
         return (flat + Vector3.up * up).normalized;
     }
 
+    private Vector3 GetScreenRightDirection()
+    {
+        if (_gameplayCamera == null) return Vector3.right;
+
+        Vector3 right = _gameplayCamera.transform.right;
+        right.y = 0f;
+        return right.sqrMagnitude > 0.0001f ? right.normalized : Vector3.right;
+    }
+
     private void UpdateTrajectoryPreview(
         bool isPlayer,
         float power01,
@@ -366,7 +430,8 @@ public class ThrowManager : MonoBehaviour
         if (WindManager.Instance != null)
         {
             float windSign = WindManager.Instance.windDirection == WindDirection.Right ? 1f : -1f;
-            acceleration += Vector3.right * (WindManager.Instance.windForce * _windEffect * windSign);
+            acceleration += GetScreenRightDirection() *
+                            (WindManager.Instance.windForce * _windEffect * windSign);
         }
 
         const int steps = 28;

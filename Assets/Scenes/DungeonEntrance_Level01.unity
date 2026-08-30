@@ -1149,11 +1149,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1954097176}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -121, y: -135.32353}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 122, y: -135.32353}
   m_SizeDelta: {x: 450, y: 600}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &83302127
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2478,7 +2478,7 @@ GameObject:
   - component: {fileID: 145944189}
   - component: {fileID: 145944190}
   m_Layer: 0
-  m_Name: ZombieHPSlider
+  m_Name: PlayerRightHPSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2502,7 +2502,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -323, y: 20.000122}
+  m_AnchoredPosition: {x: 323, y: 20.000122}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &145944190
@@ -2548,7 +2548,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1967250192}
   m_HandleRect: {fileID: 0}
-  m_Direction: 1
+  m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -4690,7 +4690,7 @@ GameObject:
   - component: {fileID: 305560912}
   - component: {fileID: 305560913}
   m_Layer: 0
-  m_Name: HumanHpSlider
+  m_Name: PlayerLeftHPSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4714,7 +4714,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 323, y: 20.000122}
+  m_AnchoredPosition: {x: -323, y: 20.000122}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &305560913
@@ -4760,7 +4760,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1312105651}
   m_HandleRect: {fileID: 0}
-  m_Direction: 0
+  m_Direction: 1
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -13320,13 +13320,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726465610}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.14608298, y: 0, z: 0, w: 0.98927236}
-  m_LocalPosition: {x: 2.25, y: 8.235838, z: -12.374802}
+  m_LocalRotation: {x: 0, y: 0.98927236, z: -0.14608298, w: 0}
+  m_LocalPosition: {x: 2.25, y: 8.235838, z: 12.374802}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 16.8, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 16.8, y: 180, z: 0}
 --- !u!1001 &727325560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14234,11 +14234,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1954097176}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 122, y: -127}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -121, y: -127}
   m_SizeDelta: {x: 450, y: 600}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &771195253
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18178,7 +18178,7 @@ GameObject:
   - component: {fileID: 1047906326}
   - component: {fileID: 1047906325}
   m_Layer: 5
-  m_Name: ZombieImage
+  m_Name: PlayerRightImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18200,7 +18200,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -55, y: -15}
+  m_AnchoredPosition: {x: 55, y: -15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1047906325
@@ -21230,10 +21230,10 @@ MonoBehaviour:
   _config: {fileID: 0}
   _playerStartHp: 50
   _enemyStartHp: 50
-  _headshotDamage: 8
-  _bodyshotDamage: 5
-  _powerThrowDamage: 10
-  _doubleAttackDamage: 5
+  _headshotDamage: 6
+  _bodyshotDamage: 4
+  _powerThrowDamage: 8
+  _doubleAttackDamage: 3
   _healAmount: 20
   _coinsPerWin: 50
   _playerHpSlider: {fileID: 305560913}
@@ -21638,7 +21638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.2, y: 5.222}
+  m_AnchoredPosition: {x: -1.69, y: 5.222}
   m_SizeDelta: {x: 1.2695, y: 0.2539}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1255864156
@@ -22559,7 +22559,7 @@ GameObject:
   - component: {fileID: 1312105653}
   - component: {fileID: 1312105652}
   m_Layer: 0
-  m_Name: HumanHPFill
+  m_Name: PlayerLeftHPFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28155,7 +28155,7 @@ GameObject:
   - component: {fileID: 1638206523}
   - component: {fileID: 1638206522}
   m_Layer: 5
-  m_Name: HumanImage
+  m_Name: PlayerLeftImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28177,7 +28177,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 55, y: -15}
+  m_AnchoredPosition: {x: -55, y: -15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1638206522
@@ -34900,7 +34900,7 @@ GameObject:
   - component: {fileID: 1967250194}
   - component: {fileID: 1967250193}
   m_Layer: 0
-  m_Name: ZombieHpFill
+  m_Name: PlayerRightHPFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36450,7 +36450,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.69, y: 5.222}
+  m_AnchoredPosition: {x: 6.2, y: 5.222}
   m_SizeDelta: {x: 1.2695, y: 0.2539}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2072855139
