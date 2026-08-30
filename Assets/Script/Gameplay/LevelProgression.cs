@@ -32,8 +32,8 @@ public static class LevelProgression
             playerHp = 5,
             enemyHp = 5 + Mathf.RoundToInt(t * 10f),           // 5 -> 15 (more hits needed)
             windMax = Mathf.Lerp(0.15f, 0.9f, t),              // calmer early, gustier late
-            minThrowPower = 3f,
-            maxThrowPower = Mathf.Lerp(10f, 8f, t),
+            minThrowPower = 2.4f,
+            maxThrowPower = Mathf.Lerp(4.6f, 4.2f, t),
             chargeSpeed = Mathf.Lerp(12f, 18f, t),
         };
     }

@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
+        if (_itemManager == null) _itemManager = FindAnyObjectByType<ItemManager>();
         ApplyConfigValues();
     }
 

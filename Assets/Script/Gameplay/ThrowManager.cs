@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 // Throwing only. Turn ownership lives in TurnManager (like the original 2D game).
 public class ThrowManager : MonoBehaviour
@@ -16,8 +17,9 @@ public class ThrowManager : MonoBehaviour
     [SerializeField] private GameObject[] _humanItemPrefabs;
     [SerializeField] private GameObject[] _zombieItemPrefabs;
     [Header("Config")]
-    [SerializeField] private float _minThrowPower = 4f;
-    [SerializeField] private float _maxThrowPower = 10f;
+    [SerializeField] private float _minThrowPower = 2.4f;
+    [SerializeField] private float _maxThrowPower = 4.6f;
+    [SerializeField] private float _powerThrowBonus = 1.2f;
     [SerializeField] private float _fullChargeSeconds = 1.4f;
     [SerializeField] private float _lobAngleDegrees = 38f;
     [SerializeField] private float _windEffect = 1.8f;
@@ -39,6 +41,14 @@ public class ThrowManager : MonoBehaviour
     private bool _chargingAsPlayer = true;
     private Action _pendingResolve;
 
+    // Charge input comes from the invisible PowerChargeArea over each character.
+    // If no area exists in the scene we fall back to reading the raw pointer.
+    private bool _areaPlayerDown;
+    private bool _areaEnemyDown;
+    private bool _hasChargeArea;
+    private bool _wasInputDown;
+    private PowerChargeArea[] _chargeAreas;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -46,6 +56,15 @@ public class ThrowManager : MonoBehaviour
 
         EnsureTrajectoryLine();
         ResolveSceneReferences();
+        RefreshChargeAreas();
+    }
+
+    // Called by PowerChargeArea (the invisible button over a character).
+    public void SetChargeInput(bool isPlayerSide, bool isDown)
+    {
+        _hasChargeArea = true;
+        if (isPlayerSide) _areaPlayerDown = isDown;
+        else _areaEnemyDown = isDown;
     }
 
     private void Update()
@@ -58,12 +77,17 @@ public class ThrowManager : MonoBehaviour
         bool playerTurn = TurnManager.Instance.CurrentTurn == TurnManager.Turn.Player;
         bool enemyHumanTurn = TurnManager.Instance.CurrentTurn == TurnManager.Turn.Enemy
                               && TurnManager.Instance.NumPlayers == 2;
-        if (!playerTurn && !enemyHumanTurn) return;
-
-        if (!TryGetPointer(out PointerPhase pointerPhase))
+        if (!playerTurn && !enemyHumanTurn)
+        {
+            _wasInputDown = false;
             return;
+        }
 
-        if (pointerPhase == PointerPhase.Began)
+        bool inputDown = GetChargeInputDown(playerTurn);
+        ChargeEdges(_wasInputDown, inputDown, out bool began, out bool ended);
+        _wasInputDown = inputDown;
+
+        if (began)
         {
             _isCharging = true;
             _chargingAsPlayer = playerTurn;
@@ -83,34 +107,67 @@ public class ThrowManager : MonoBehaviour
                 ConfirmCharge();
         }
 
-        if (pointerPhase == PointerPhase.Ended && _isCharging)
+        if (ended && _isCharging)
             ConfirmCharge();
     }
 
-    private enum PointerPhase { Began, Held, Ended }
+    // Press/release edges from a held-state bool (hold-to-charge input model).
+    public static void ChargeEdges(bool wasDown, bool isDown, out bool began, out bool ended)
+    {
+        began = isDown && !wasDown;
+        ended = !isDown && wasDown;
+    }
 
-    private static bool TryGetPointer(out PointerPhase phase)
+    private bool GetChargeInputDown(bool playerTurn)
+    {
+        if (_hasChargeArea)
+        {
+            bool eventInputDown = playerTurn ? _areaPlayerDown : _areaEnemyDown;
+            return eventInputDown || IsRawPointerInsideChargeArea(playerTurn);
+        }
+
+        // ponytail: fallback for scenes without a PowerChargeArea (mainly editor/mouse testing).
+        // Skips taps that land on other UI so pause/item buttons don't start a charge.
+        // Ceiling: touch IsPointerOverGameObject() uses the last pointer, not per-finger.
+        if (!TryGetRawPointer(out _)) return false;
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return false;
+        return true;
+    }
+
+    private void RefreshChargeAreas()
+    {
+        _chargeAreas = FindObjectsByType<PowerChargeArea>(
+            FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        _hasChargeArea = _chargeAreas.Length > 0;
+    }
+
+    private bool IsRawPointerInsideChargeArea(bool playerTurn)
+    {
+        if (!TryGetRawPointer(out Vector2 screenPoint)) return false;
+
+        if (_chargeAreas == null || _chargeAreas.Length == 0)
+            RefreshChargeAreas();
+
+        foreach (PowerChargeArea area in _chargeAreas)
+        {
+            if (area == null || !area.isActiveAndEnabled) continue;
+            if (area.IsPlayerSide != playerTurn) continue;
+            if (area.ContainsScreenPoint(screenPoint)) return true;
+        }
+        return false;
+    }
+
+    private static bool TryGetRawPointer(out Vector2 screenPoint)
     {
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            phase = touch.phase == TouchPhase.Began
-                ? PointerPhase.Began
-                : touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled
-                    ? PointerPhase.Ended
-                    : PointerPhase.Held;
-            return true;
+            screenPoint = touch.position;
+            return touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled;
         }
 
-        if (Input.GetMouseButtonDown(0)) phase = PointerPhase.Began;
-        else if (Input.GetMouseButtonUp(0)) phase = PointerPhase.Ended;
-        else if (Input.GetMouseButton(0)) phase = PointerPhase.Held;
-        else
-        {
-            phase = PointerPhase.Held;
-            return false;
-        }
-        return true;
+        screenPoint = Input.mousePosition;
+        return Input.GetMouseButton(0);
     }
 
     private void ShowChargeBar(bool isPlayer, float t)
@@ -182,7 +239,7 @@ public class ThrowManager : MonoBehaviour
         GameObject item = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
 
         float maxForce = _maxThrowPower;
-        if (specialType == "PowerThrow") maxForce += 3f;
+        if (specialType == "PowerThrow") maxForce += _powerThrowBonus;
 
         Rigidbody rb = EnsureRigidbody(item);
         var projectile = EnsureProjectileItem(item);
@@ -299,7 +356,7 @@ public class ThrowManager : MonoBehaviour
         if (spawnPoint == null || targetPoint == null) return;
 
         float maxForce = _maxThrowPower;
-        if (specialType == "PowerThrow") maxForce += 3f;
+        if (specialType == "PowerThrow") maxForce += _powerThrowBonus;
 
         float throwForce = Mathf.Lerp(_minThrowPower, maxForce, Mathf.Clamp01(power01));
         Vector3 dir = ComputeLobDirection(spawnPoint.position, targetPoint.position, angleDegrees);

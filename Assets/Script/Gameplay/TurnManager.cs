@@ -37,6 +37,10 @@ public class TurnManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
+
+        if (_throwManager == null) _throwManager = FindAnyObjectByType<ThrowManager>();
+        if (_powerBarUI == null) _powerBarUI = FindAnyObjectByType<PowerBarUI>();
+        if (_itemManager == null) _itemManager = FindAnyObjectByType<ItemManager>();
     }
 
     public void InitMatch(int numPlayers, int difficulty)

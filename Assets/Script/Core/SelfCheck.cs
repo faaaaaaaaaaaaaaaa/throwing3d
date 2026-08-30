@@ -14,6 +14,7 @@ public static class SelfCheck
         var l20 = LevelProgression.Generate(20);
         Debug.Assert(l1.enemyHp < l20.enemyHp, "SelfCheck: enemy HP should ramp with difficulty");
         Debug.Assert(l1.windMax < l20.windMax, "SelfCheck: wind ceiling should ramp with difficulty");
+        Debug.Assert(l1.minThrowPower < l1.maxThrowPower, "SelfCheck: throw power range must be playable");
         Debug.Assert(LevelProgression.Generate(999).levelNumber == 20, "SelfCheck: level index must clamp to max");
         Debug.Assert(LevelProgression.Generate(0).levelNumber == 1, "SelfCheck: level index must clamp to min");
 
@@ -35,6 +36,14 @@ public static class SelfCheck
         // Lob throws must go up-toward the target, not into the floor.
         var lob = ThrowManager.ComputeLobDirection(new Vector3(5f, 1f, 0f), new Vector3(-5f, 1f, 0f), 38f);
         Debug.Assert(lob.y > 0.25f && lob.x < 0f, "SelfCheck: player lob should arc toward enemy");
+
+        // Hold-to-charge edges: press fires only on rising edge, release only on falling edge.
+        ThrowManager.ChargeEdges(false, true, out bool b1, out bool e1);
+        ThrowManager.ChargeEdges(true, true, out bool b2, out bool e2);
+        ThrowManager.ChargeEdges(true, false, out bool b3, out bool e3);
+        Debug.Assert(b1 && !e1, "SelfCheck: charge should begin on press");
+        Debug.Assert(!b2 && !e2, "SelfCheck: held input should not re-trigger begin");
+        Debug.Assert(!b3 && e3, "SelfCheck: charge should end on release");
 
         Debug.Log("[SelfCheck] passed");
     }
