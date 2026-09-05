@@ -29,8 +29,9 @@ public static class LevelProgression
         return new LevelConfig
         {
             levelNumber = n,
-            playerHp = 5,
-            enemyHp = 5 + Mathf.RoundToInt(t * 10f),           // 5 -> 15 (more hits needed)
+            // Matches current body/head damage (~4/6): early fights take ~9–12 body hits.
+            playerHp = 50,
+            enemyHp = 50 + Mathf.RoundToInt(t * 20f),          // 50 -> 70
             windMax = Mathf.Lerp(0.15f, 0.9f, t),              // calmer early, gustier late
             minThrowPower = 2.4f,
             maxThrowPower = Mathf.Lerp(4.6f, 4.2f, t),

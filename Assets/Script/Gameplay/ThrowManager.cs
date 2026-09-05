@@ -13,6 +13,9 @@ public class ThrowManager : MonoBehaviour
     [SerializeField] private Transform _humanHandSpawnPoint;
     [SerializeField] private string _playerThrowPointTag = "PlayerLeft_Hand";
     [SerializeField] private string _enemyThrowPointTag = "PlayerRight_Hand";
+    [Header("Aim Points")]
+    [SerializeField] private Transform _playerAimPoint;
+    [SerializeField] private Transform _enemyAimPoint;
     [Header("Projectile Prefabs")]
     [SerializeField] private GameObject[] _humanItemPrefabs;
     [SerializeField] private GameObject[] _zombieItemPrefabs;
@@ -231,28 +234,31 @@ public class ThrowManager : MonoBehaviour
             isPlayer ? _playerLeftAnimator : _playerRightAnimator;
         if (characterAnimator != null && characterAnimator.PlayThrow())
         {
-            StartCoroutine(ReleaseProjectileAfterDelay(
-                isPlayer, power01, specialType, onResolved, characterAnimator.ThrowReleaseDelay));
+            StartCoroutine(ReleaseProjectileAtThrowRelease(
+                isPlayer, power01, specialType, onResolved, characterAnimator));
             return;
         }
 
         ReleaseProjectile(isPlayer, power01, specialType, onResolved);
     }
 
-    private IEnumerator ReleaseProjectileAfterDelay(
+    private IEnumerator ReleaseProjectileAtThrowRelease(
         bool isPlayer,
         float power01,
         string specialType,
         Action onResolved,
-        float delay)
+        CharacterAnimator characterAnimator)
     {
-        if (delay > 0f)
-            yield return new WaitForSeconds(delay);
-
-        ReleaseProjectile(isPlayer, power01, specialType, onResolved);
+        yield return characterAnimator.WaitForThrowRelease();
+        ReleaseProjectile(isPlayer, power01, specialType, onResolved, characterAnimator);
     }
 
-    private void ReleaseProjectile(bool isPlayer, float power01, string specialType, Action onResolved)
+    private void ReleaseProjectile(
+        bool isPlayer,
+        float power01,
+        string specialType,
+        Action onResolved,
+        CharacterAnimator characterAnimator = null)
     {
         if (GameManager.Instance == null || GameManager.Instance.IsGameOver)
         {
@@ -261,8 +267,8 @@ public class ThrowManager : MonoBehaviour
         }
 
         ResolveSceneReferences();
-        Transform spawnPoint = isPlayer ? _humanHandSpawnPoint : _zombieHandSpawnPoint;
-        Transform targetPoint = isPlayer ? _zombieHandSpawnPoint : _humanHandSpawnPoint;
+        Transform spawnPoint = ResolveSpawnPoint(isPlayer, characterAnimator);
+        Transform targetPoint = ResolveAimPoint(isPlayer);
         GameObject[] prefabs = GetPrefabsForSide(isPlayer);
         if (spawnPoint == null || targetPoint == null || prefabs == null || prefabs.Length == 0)
         {
@@ -360,6 +366,41 @@ public class ThrowManager : MonoBehaviour
             _playerRightAnimator = FindCharacterAnimator(_enemyTag);
     }
 
+    private Transform ResolveSpawnPoint(bool isPlayer, CharacterAnimator characterAnimator)
+    {
+        if (characterAnimator != null && characterAnimator.HandReleasePoint != null)
+            return characterAnimator.HandReleasePoint;
+
+        return isPlayer ? _humanHandSpawnPoint : _zombieHandSpawnPoint;
+    }
+
+    private Transform ResolveAimPoint(bool isPlayerShooter)
+    {
+        Transform aimPoint = isPlayerShooter ? _enemyAimPoint : _playerAimPoint;
+        if (aimPoint != null) return aimPoint;
+
+        string targetTag = isPlayerShooter ? _enemyTag : _playerTag;
+        aimPoint = FindBodyAimPoint(targetTag);
+        if (aimPoint != null) return aimPoint;
+
+        // ponytail: last resort keeps old scenes playable; hand is offset to the side so throws skew.
+        return isPlayerShooter ? _zombieHandSpawnPoint : _humanHandSpawnPoint;
+    }
+
+    private Transform FindBodyAimPoint(string characterTag)
+    {
+        Transform character = FindTransformWithTag(characterTag);
+        if (character == null) return null;
+
+        foreach (Collider col in character.GetComponentsInChildren<Collider>(true))
+        {
+            if (col.CompareTag(_bodyTag))
+                return col.transform;
+        }
+
+        return character;
+    }
+
     private static CharacterAnimator FindCharacterAnimator(string tagName)
     {
         Transform character = FindTransformWithTag(tagName);
@@ -416,7 +457,7 @@ public class ThrowManager : MonoBehaviour
         if (_trajectoryLine == null) return;
 
         Transform spawnPoint = isPlayer ? _humanHandSpawnPoint : _zombieHandSpawnPoint;
-        Transform targetPoint = isPlayer ? _zombieHandSpawnPoint : _humanHandSpawnPoint;
+        Transform targetPoint = ResolveAimPoint(isPlayer);
         if (spawnPoint == null || targetPoint == null) return;
 
         float maxForce = _maxThrowPower;
@@ -487,7 +528,11 @@ public class ThrowManager : MonoBehaviour
         bool hitEnemy = hitTag == _enemyTag;
         bool hitPlayer = hitTag == _playerTag;
         bool landed = hitType == ProjectileItem.HitType.Head || hitType == ProjectileItem.HitType.Body;
-        if (!landed) return;
+        if (!landed)
+        {
+            Debug.Log($"[ThrowHit] no damage — part={hitType} character={hitTag ?? "none"}");
+            return;
+        }
 
         int damage;
         if (specialType == "DoubleAttack")
@@ -499,7 +544,31 @@ public class ThrowManager : MonoBehaviour
                 ? GameManager.Instance.HeadshotDamage
                 : GameManager.Instance.BodyshotDamage;
 
-        if (isPlayerShooter && hitEnemy) GameManager.Instance.HitEnemy(damage);
-        else if (!isPlayerShooter && hitPlayer) GameManager.Instance.HitPlayer(damage);
+        string attacker = isPlayerShooter ? _playerTag : _enemyTag;
+        if (isPlayerShooter && hitEnemy)
+        {
+            GameManager.Instance.HitEnemy(damage);
+            Debug.Log(
+                $"[ThrowHit] {attacker} hit {_enemyTag} {hitType} " +
+                $"dmg={damage} special={specialType ?? "none"} " +
+                $"enemyHp={GameManager.Instance.EnemyHp}",
+                this);
+        }
+        else if (!isPlayerShooter && hitPlayer)
+        {
+            GameManager.Instance.HitPlayer(damage);
+            Debug.Log(
+                $"[ThrowHit] {attacker} hit {_playerTag} {hitType} " +
+                $"dmg={damage} special={specialType ?? "none"} " +
+                $"playerHp={GameManager.Instance.PlayerHp}",
+                this);
+        }
+        else
+        {
+            Debug.Log(
+                $"[ThrowHit] ignored — attacker={attacker} hitTag={hitTag ?? "none"} " +
+                $"part={hitType} dmgWouldBe={damage}",
+                this);
+        }
     }
 }

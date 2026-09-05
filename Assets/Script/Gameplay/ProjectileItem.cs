@@ -49,14 +49,24 @@ public class ProjectileItem : MonoBehaviour
         hasHit = true;
 
         string targetCharTag = FindCharacterTag(collision.transform);
+        string hitObject = collision.gameObject.name;
+        string hitObjectTag = collision.gameObject.tag;
 
+        HitType hitType;
         if (collision.gameObject.CompareTag(HeadTag))
-            OnHit?.Invoke(HitType.Head, targetCharTag);
+            hitType = HitType.Head;
         else if (collision.gameObject.CompareTag(BodyTag))
-            OnHit?.Invoke(HitType.Body, targetCharTag);
+            hitType = HitType.Body;
         else
-            OnHit?.Invoke(HitType.Ground, targetCharTag);
+            hitType = HitType.Ground;
 
+        Debug.Log(
+            $"[ThrowHit] projectile={name} owner={OwnerTag} " +
+            $"object={hitObject} objectTag={hitObjectTag} " +
+            $"character={targetCharTag ?? "none"} part={hitType}",
+            this);
+
+        OnHit?.Invoke(hitType, targetCharTag);
         Destroy(gameObject, 0.5f);
     }
 }
