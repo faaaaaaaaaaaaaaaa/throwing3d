@@ -4,10 +4,10 @@ using UnityEngine;
 public class GameConfig : ScriptableObject
 {
     [Header("HP / Enemy Miss")]
-    public int playerHP = 50;
-    public int enemyHPEasy = 50;
-    public int enemyHPMedium = 60;
-    public int enemyHPHard = 70;
+    public int playerHP = 28;
+    public int enemyHPEasy = 28;
+    public int enemyHPMedium = 32;
+    public int enemyHPHard = 36;
 
     public int missedChanceEasy = 50;
     public int missedChanceNormal = 30;
@@ -21,7 +21,7 @@ public class GameConfig : ScriptableObject
     public int doubleAttackDamage = 3;
 
     [Header("Heal / Timing")]
-    public int healHP = 20;
+    public int healHP = 10;
     public int timeToThink = 30;
     public int timeToWarning = 10;
 }

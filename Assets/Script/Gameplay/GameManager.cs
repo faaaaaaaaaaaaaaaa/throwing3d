@@ -11,14 +11,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameConfig _config;
 
     [FormerlySerializedAs("_humanStartHp")]
-    [SerializeField] private int _playerStartHp = 50;
+    [SerializeField] private int _playerStartHp = 28;
     [FormerlySerializedAs("_zombieStartHp")]
-    [SerializeField] private int _enemyStartHp = 50;
+    [SerializeField] private int _enemyStartHp = 28;
     [SerializeField] private int _headshotDamage = 6;
     [SerializeField] private int _bodyshotDamage = 4;
     [SerializeField] private int _powerThrowDamage = 8;
     [SerializeField] private int _doubleAttackDamage = 3;
-    [SerializeField] private int _healAmount = 20;
+    [SerializeField] private int _healAmount = 10;
     [SerializeField] private int _coinsPerWin = 50;
 
     [Header("UI HP")]
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
             _playerStartHp = _config.playerHP;
             int baseEnemy = GetEnemyHpForDifficulty(_selectedDifficulty);
             float t = (cfg.levelNumber - 1) / 19f;
-            _enemyStartHp = baseEnemy + Mathf.RoundToInt(t * 20f);
+            _enemyStartHp = baseEnemy + Mathf.RoundToInt(t * 12f);
         }
         else
         {
