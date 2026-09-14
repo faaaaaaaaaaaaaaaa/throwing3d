@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     }
 
     public bool IsGameplayActive => _gameplayCanvas == null || _gameplayCanvas.gameObject.activeSelf;
+    public Canvas ResultCanvas => _resultCanvas;
 
     public void ShowOnly(Canvas canvasToShow)
     {

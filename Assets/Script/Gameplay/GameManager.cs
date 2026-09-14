@@ -65,21 +65,76 @@ public class GameManager : MonoBehaviour
 
     private void Start() => SetupHp();
 
-    // ponytail: scenes already have named buttons; resolve if inspector refs are empty.
-    private void ResolveResultButtons()
+    // Prefer the live ResultPanel tree the player sees. Overwrite stale inspector refs that may
+    // point at duplicates / off-canvas clones so ApplyResultButtons toggles the visible set.
+    private void ResolveResultButtons(bool forceRebind = false)
     {
-        Transform root = _resultPanel != null ? _resultPanel.transform : null;
-        if (_nextButton == null) _nextButton = FindResultChild(root, "NextButton");
-        if (_retryButton == null) _retryButton = FindResultChild(root, "RetryButton");
-        if (_reviveButton == null) _reviveButton = FindResultChild(root, "ReviveAdButton");
-        if (_doubleCoinsButton == null) _doubleCoinsButton = FindResultChild(root, "DoubleCoinsAdButton");
+        Transform root = GetResultRoot();
+        BindResultButton(ref _nextButton, root, "NextButton", forceRebind);
+        BindResultButton(ref _retryButton, root, "RetryButton", forceRebind);
+        BindResultButton(ref _reviveButton, root, "ReviveAdButton", forceRebind);
+        BindResultButton(ref _doubleCoinsButton, root, "DoubleCoinsAdButton", forceRebind);
+    }
+
+    private Transform GetResultRoot()
+    {
+        if (_resultPanel != null) return _resultPanel.transform;
+
+        // Panel missing from inspector — find the ResultCanvas the UIManager shows.
+        var canvas = UIManager.Instance != null
+            ? UIManager.Instance.ResultCanvas
+            : null;
+        if (canvas != null) return canvas.transform;
+
+        GameObject panel = FindSceneObjectByName("ResultPanel");
+        if (panel != null)
+        {
+            _resultPanel = panel;
+            return panel.transform;
+        }
+        return null;
+    }
+
+    private static void BindResultButton(ref GameObject field, Transform root, string name, bool force)
+    {
+        if (!force && field != null && IsUnderRoot(field.transform, root))
+            return;
+
+        GameObject found = FindResultChild(root, name);
+        if (found != null) field = found;
+    }
+
+    private static bool IsUnderRoot(Transform t, Transform root)
+    {
+        if (t == null) return false;
+        if (root == null) return true;
+        return t == root || t.IsChildOf(root);
     }
 
     private static GameObject FindResultChild(Transform root, string name)
     {
-        if (root == null) return GameObject.Find(name);
-        Transform t = root.Find(name);
-        return t != null ? t.gameObject : GameObject.Find(name);
+        if (root != null)
+        {
+            // Recursive (include inactive) — Transform.Find only checks direct children / paths.
+            foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+            {
+                if (child.name == name)
+                    return child.gameObject;
+            }
+        }
+
+        return FindSceneObjectByName(name);
+    }
+
+    private static GameObject FindSceneObjectByName(string name)
+    {
+        foreach (Transform t in Object.FindObjectsByType<Transform>(
+                     FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (t.name == name)
+                return t.gameObject;
+        }
+        return null;
     }
 
     private void ApplyConfigValues()
@@ -157,11 +212,16 @@ public class GameManager : MonoBehaviour
         _turnManager?.HideTurnText();
         _turnManager?.StopTimer();
 
-        ResolveResultButtons();
-        if (_resultText != null) _resultText.text = _resultLayout.Title ?? string.Empty;
-        ApplyResultButtons(_resultLayout);
+        // Show canvas/panel first, then rebind + apply. Hiding before the canvas is active was
+        // leaving a second visible set (or stale refs) untouched in playtests.
         if (_resultPanel != null) _resultPanel.SetActive(true);
         UIManager.Instance?.ShowResult();
+
+        ResolveResultButtons(forceRebind: true);
+        if (_resultText != null) _resultText.text = _resultLayout.Title ?? string.Empty;
+        ApplyResultButtons(_resultLayout);
+        SuppressDuplicateResultButtons();
+        LogResultVisibilityMismatch(_resultLayout);
 
         if (_playerWon)
         {
@@ -184,7 +244,92 @@ public class GameManager : MonoBehaviour
 
     private static void SetActive(GameObject go, bool active)
     {
-        if (go != null && go.activeSelf != active) go.SetActive(active);
+        // Always apply — don't skip on activeSelf. Stale hierarchy / duplicate roots made the
+        // short-circuit leave the visible Retry+Revive on mid-campaign wins.
+        if (go != null) go.SetActive(active);
+    }
+
+    // Hide any other Next/Retry/Revive/DoubleCoins clones so only the bound set remains.
+    private void SuppressDuplicateResultButtons()
+    {
+        SuppressDuplicatesNamed("NextButton", _nextButton);
+        SuppressDuplicatesNamed("RetryButton", _retryButton);
+        SuppressDuplicatesNamed("ReviveAdButton", _reviveButton);
+        SuppressDuplicatesNamed("DoubleCoinsAdButton", _doubleCoinsButton);
+    }
+
+    private static void SuppressDuplicatesNamed(string name, GameObject keep)
+    {
+        foreach (Transform t in Object.FindObjectsByType<Transform>(
+                     FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (t.name != name) continue;
+            if (keep != null && t.gameObject == keep) continue;
+            t.gameObject.SetActive(false);
+        }
+    }
+
+    private void LogResultVisibilityMismatch(ResultScreenLayout layout)
+    {
+        bool ok = ResultScreenLayout.MatchesVisibility(
+            layout,
+            IsShown(_nextButton),
+            IsShown(_retryButton),
+            IsShown(_reviveButton),
+            IsShown(_doubleCoinsButton));
+        if (ok) return;
+
+        Debug.LogWarning(
+            $"GameManager: result button visibility mismatch for '{layout.Title}'. " +
+            $"next={IsShown(_nextButton)}/{layout.ShowNext} " +
+            $"retry={IsShown(_retryButton)}/{layout.ShowRetry} " +
+            $"revive={IsShown(_reviveButton)}/{layout.ShowRevive} " +
+            $"double={IsShown(_doubleCoinsButton)}/{layout.ShowDoubleCoins}",
+            this);
+    }
+
+    private static bool IsShown(GameObject go) => go != null && go.activeSelf;
+
+    // Editor / SelfCheck: apply a layout to the bound buttons and verify activeSelf.
+    // showUi:false keeps the check invisible (used on scene load).
+    public bool ApplyAndValidateResultLayout(ResultScreenLayout layout, bool showUi = true)
+    {
+        if (showUi)
+        {
+            if (_resultPanel != null) _resultPanel.SetActive(true);
+            UIManager.Instance?.ShowResult();
+        }
+
+        ResolveResultButtons(forceRebind: true);
+        ApplyResultButtons(layout);
+        SuppressDuplicateResultButtons();
+        return ResultScreenLayout.MatchesVisibility(
+            layout,
+            IsShown(_nextButton),
+            IsShown(_retryButton),
+            IsShown(_reviveButton),
+            IsShown(_doubleCoinsButton));
+    }
+
+    // SelfCheck: run win/lose/floor-20 checks without leaving the result canvas up.
+    public bool ValidateAllResultLayoutsSilent()
+    {
+        ResolveResultButtons(forceRebind: true);
+        bool nextWas = IsShown(_nextButton);
+        bool retryWas = IsShown(_retryButton);
+        bool reviveWas = IsShown(_reviveButton);
+        bool doubleWas = IsShown(_doubleCoinsButton);
+
+        bool ok = true;
+        ok &= ApplyAndValidateResultLayout(ResultScreenLayout.For(true, false, 50), showUi: false);
+        ok &= ApplyAndValidateResultLayout(ResultScreenLayout.For(false, false, 50), showUi: false);
+        ok &= ApplyAndValidateResultLayout(ResultScreenLayout.For(true, true, 50), showUi: false);
+
+        SetActive(_nextButton, nextWas);
+        SetActive(_retryButton, retryWas);
+        SetActive(_reviveButton, reviveWas);
+        SetActive(_doubleCoinsButton, doubleWas);
+        return ok;
     }
 
     private static void SetButtonLabel(GameObject button, string label)

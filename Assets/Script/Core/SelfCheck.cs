@@ -66,6 +66,14 @@ public static class SelfCheck
         Debug.Assert(cleared.Title.Contains("Campaign Complete"),
             "SelfCheck: floor 20 win must show campaign-complete copy");
 
+        // Visibility matrix for the three end states (flags only — scene apply checked AfterSceneLoad).
+        Debug.Assert(ResultScreenLayout.MatchesVisibility(win, true, false, false, true),
+            "SelfCheck: mid-win visibility must be Next+DoubleCoins");
+        Debug.Assert(ResultScreenLayout.MatchesVisibility(lose, false, true, true, false),
+            "SelfCheck: lose visibility must be Retry+Revive");
+        Debug.Assert(ResultScreenLayout.MatchesVisibility(cleared, true, true, false, true),
+            "SelfCheck: floor-20 visibility must be Menu+RetryCampaign+DoubleCoins");
+
         // Broken LFS leaves null prefab slots — picker must skip them, never return null when a real one exists.
         var dummy = new GameObject("SelfCheckThrowable");
         try
@@ -92,6 +100,11 @@ public static class SelfCheck
 
         var ui = Object.FindAnyObjectByType<UIManager>();
         ui?.LogMissingCriticalRefs();
+
+        if (gm == null) return;
+        bool ok = gm.ValidateAllResultLayoutsSilent();
+        if (ok) Debug.Log("[SelfCheck] result visibility OK (win/lose/floor-20)");
+        else Debug.LogWarning("[SelfCheck] result visibility FAILED — check ResultPanel button refs");
     }
 #endif
 }

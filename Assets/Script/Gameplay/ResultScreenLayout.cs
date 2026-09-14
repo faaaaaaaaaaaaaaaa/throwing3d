@@ -75,4 +75,18 @@ public readonly struct ResultScreenLayout
             nextLabel: "Next",
             retryLabel: "Retry");
     }
+
+    // Used by SelfCheck / play validation: do the four button activeSelf flags match this layout?
+    public static bool MatchesVisibility(
+        ResultScreenLayout layout,
+        bool nextActive,
+        bool retryActive,
+        bool reviveActive,
+        bool doubleCoinsActive)
+    {
+        return nextActive == layout.ShowNext
+               && retryActive == layout.ShowRetry
+               && reviveActive == layout.ShowRevive
+               && doubleCoinsActive == layout.ShowDoubleCoins;
+    }
 }
