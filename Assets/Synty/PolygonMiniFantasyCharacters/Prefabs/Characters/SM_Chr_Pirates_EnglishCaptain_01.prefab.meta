@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cd9286355751041418107a4503dc811a
+timeCreated: 1530583561
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 122084
+  packageName: POLYGON MINI - Fantasy Character Pack - Art by Synty
+  packageVersion: 1.7.1
+  assetPath: Assets/Synty/PolygonMiniFantasyCharacters/Prefabs/Characters/SM_Chr_Pirates_EnglishCaptain_01.prefab
+  uploadId: 976042

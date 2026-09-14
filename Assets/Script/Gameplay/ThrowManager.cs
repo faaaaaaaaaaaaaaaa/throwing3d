@@ -25,6 +25,7 @@ public class ThrowManager : MonoBehaviour
     [SerializeField] private float _powerThrowBonus = 1.2f;
     [SerializeField] private float _fullChargeSeconds = 1.4f;
     [SerializeField] private float _lobAngleDegrees = 38f;
+    [SerializeField] private float _windThrowPowerEffect = 1f;
     [SerializeField] private float _windEffect = 1.8f;
     [SerializeField] private float _projectileMass = 0.35f;
     [SerializeField] private PowerBarUI _powerBarUI;
@@ -297,17 +298,24 @@ public class ThrowManager : MonoBehaviour
 
         if (rb != null)
         {
-            float throwForce = Mathf.Lerp(_minThrowPower, maxForce, Mathf.Clamp01(power01));
+            float baseThrowForce = Mathf.Lerp(_minThrowPower, maxForce, Mathf.Clamp01(power01));
             Vector3 throwDir = ComputeLobDirection(spawnPoint.position, targetPoint.position, _lobAngleDegrees);
+            float throwForce = ApplyWindToThrowForce(
+                baseThrowForce,
+                WindManager.Instance != null ? WindManager.Instance.windForce : 0f,
+                GetWindAlignment(throwDir),
+                _windThrowPowerEffect);
             rb.mass = _projectileMass;
             rb.AddForce(throwDir * throwForce, ForceMode.Impulse);
 
             if (projectile != null && WindManager.Instance != null)
             {
-                float windSign = WindManager.Instance.windDirection == WindDirection.Right ? 1f : -1f;
-                projectile.WindAcceleration =
-                    GetScreenRightDirection() *
-                    (WindManager.Instance.windForce * _windEffect * windSign);
+                projectile.WindAcceleration = GetWindAcceleration();
+
+                Debug.Log(
+                    $"[Wind] dir={WindManager.Instance.windDirection} force={WindManager.Instance.windForce:0.00} " +
+                    $"baseThrow={baseThrowForce:0.00} finalThrow={throwForce:0.00}",
+                    this);
             }
         }
 
@@ -439,6 +447,21 @@ public class ThrowManager : MonoBehaviour
         return (flat + Vector3.up * up).normalized;
     }
 
+    public static float ApplyWindToThrowForce(
+        float throwForce,
+        float windForce,
+        float windAlignment,
+        float windPowerEffect)
+    {
+        if (Mathf.Abs(windAlignment) < 0.05f) return throwForce;
+
+        // windAlignment > 0 = tailwind, < 0 = headwind.
+        float signedWind = Mathf.Sign(windAlignment) *
+                           Mathf.Clamp01(windForce) *
+                           Mathf.Max(0f, windPowerEffect);
+        return Mathf.Max(0.1f, throwForce + signedWind);
+    }
+
     private Vector3 GetScreenRightDirection()
     {
         if (_gameplayCamera == null) return Vector3.right;
@@ -446,6 +469,32 @@ public class ThrowManager : MonoBehaviour
         Vector3 right = _gameplayCamera.transform.right;
         right.y = 0f;
         return right.sqrMagnitude > 0.0001f ? right.normalized : Vector3.right;
+    }
+
+    private Vector3 GetWindDirection()
+    {
+        if (WindManager.Instance == null) return Vector3.zero;
+
+        float windSign = WindManager.Instance.windDirection == WindDirection.Right ? 1f : -1f;
+        return GetScreenRightDirection() * windSign;
+    }
+
+    private float GetWindAlignment(Vector3 throwDir)
+    {
+        Vector3 flatThrow = throwDir;
+        flatThrow.y = 0f;
+        if (flatThrow.sqrMagnitude < 0.0001f) return 0f;
+
+        Vector3 windDir = GetWindDirection();
+        if (windDir.sqrMagnitude < 0.0001f) return 0f;
+
+        return Vector3.Dot(flatThrow.normalized, windDir.normalized);
+    }
+
+    private Vector3 GetWindAcceleration()
+    {
+        if (WindManager.Instance == null) return Vector3.zero;
+        return GetWindDirection() * (WindManager.Instance.windForce * _windEffect);
     }
 
     private void UpdateTrajectoryPreview(
@@ -463,17 +512,18 @@ public class ThrowManager : MonoBehaviour
         float maxForce = _maxThrowPower;
         if (specialType == "PowerThrow") maxForce += _powerThrowBonus;
 
-        float throwForce = Mathf.Lerp(_minThrowPower, maxForce, Mathf.Clamp01(power01));
+        float baseThrowForce = Mathf.Lerp(_minThrowPower, maxForce, Mathf.Clamp01(power01));
         Vector3 dir = ComputeLobDirection(spawnPoint.position, targetPoint.position, angleDegrees);
+        float throwForce = ApplyWindToThrowForce(
+            baseThrowForce,
+            WindManager.Instance != null ? WindManager.Instance.windForce : 0f,
+            GetWindAlignment(dir),
+            _windThrowPowerEffect);
         Vector3 velocity = dir * (throwForce / _projectileMass);
         Vector3 acceleration = Physics.gravity;
 
         if (WindManager.Instance != null)
-        {
-            float windSign = WindManager.Instance.windDirection == WindDirection.Right ? 1f : -1f;
-            acceleration += GetScreenRightDirection() *
-                            (WindManager.Instance.windForce * _windEffect * windSign);
-        }
+            acceleration += GetWindAcceleration();
 
         const int steps = 28;
         const float stepTime = 0.07f;

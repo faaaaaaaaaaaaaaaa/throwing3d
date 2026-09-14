@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4c24fe12730a81e429a3df3f137f2eb2
+timeCreated: 1530583546
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 122084
+  packageName: POLYGON MINI - Fantasy Character Pack - Art by Synty
+  packageVersion: 1.7.1
+  assetPath: Assets/Synty/PolygonMiniFantasyCharacters/Prefabs/Characters/SM_Chr_Vikings_Warrior_01.prefab
+  uploadId: 976042
