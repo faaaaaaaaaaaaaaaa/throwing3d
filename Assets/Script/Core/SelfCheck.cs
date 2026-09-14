@@ -49,7 +49,49 @@ public static class SelfCheck
         Debug.Assert(!b2 && !e2, "SelfCheck: held input should not re-trigger begin");
         Debug.Assert(!b3 && e3, "SelfCheck: charge should end on release");
 
+        // Result screen: win/lose/campaign-complete button sets and coin reward copy.
+        var win = ResultScreenLayout.For(won: true, campaignComplete: false, coinsPerWin: 50);
+        Debug.Assert(win.ShowNext && win.ShowDoubleCoins && !win.ShowRetry && !win.ShowRevive,
+            "SelfCheck: mid-campaign win should show Next + DoubleCoins only");
+        Debug.Assert(win.Title.Contains("50") && win.Title.Contains("Victory"),
+            "SelfCheck: win result must surface the coin reward");
+
+        var lose = ResultScreenLayout.For(won: false, campaignComplete: false, coinsPerWin: 50);
+        Debug.Assert(lose.ShowRetry && lose.ShowRevive && !lose.ShowNext && !lose.ShowDoubleCoins,
+            "SelfCheck: lose should show Retry + Revive only");
+
+        var cleared = ResultScreenLayout.For(won: true, campaignComplete: true, coinsPerWin: 50);
+        Debug.Assert(cleared.NextIsMenu && cleared.RetryIsCampaignRestart && !cleared.ShowRevive,
+            "SelfCheck: floor 20 win must end campaign (Menu + Retry Campaign)");
+        Debug.Assert(cleared.Title.Contains("Campaign Complete"),
+            "SelfCheck: floor 20 win must show campaign-complete copy");
+
+        // Broken LFS leaves null prefab slots — picker must skip them, never return null when a real one exists.
+        var dummy = new GameObject("SelfCheckThrowable");
+        try
+        {
+            var picked = ThrowManager.PickPrefab(new[] { null, dummy, null });
+            Debug.Assert(picked == dummy, "SelfCheck: PickPrefab must skip null LFS slots");
+            Debug.Assert(ThrowManager.PickPrefab(new GameObject[] { null, null }) == null,
+                "SelfCheck: PickPrefab must return null when all slots are missing");
+        }
+        finally
+        {
+            Object.DestroyImmediate(dummy);
+        }
+
         Debug.Log("[SelfCheck] passed");
+    }
+
+    // Soft validation after the scene is up — logs only, never throws / asserts.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void ValidateSceneRefs()
+    {
+        var gm = Object.FindAnyObjectByType<GameManager>();
+        gm?.LogMissingCriticalRefs();
+
+        var ui = Object.FindAnyObjectByType<UIManager>();
+        ui?.LogMissingCriticalRefs();
     }
 #endif
 }

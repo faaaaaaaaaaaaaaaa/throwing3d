@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour
     [Header("Result UI (optional)")]
     [SerializeField] private GameObject _resultPanel;
     [SerializeField] private TMP_Text _resultText;
+    [SerializeField] private GameObject _nextButton;
+    [SerializeField] private GameObject _retryButton;
+    [SerializeField] private GameObject _reviveButton;
+    [SerializeField] private GameObject _doubleCoinsButton;
 
     [Header("Refs")]
     [SerializeField] private TurnManager _turnManager;
@@ -39,6 +43,8 @@ public class GameManager : MonoBehaviour
     private int _enemyHp;
     private bool _isGameOver;
     private bool _playerWon;
+    private bool _campaignComplete;
+    private ResultScreenLayout _resultLayout;
     private int _selectedNumPlayers = 1;
     private int _selectedDifficulty = 0;
 
@@ -53,10 +59,28 @@ public class GameManager : MonoBehaviour
 
         if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
         if (_itemManager == null) _itemManager = FindAnyObjectByType<ItemManager>();
+        ResolveResultButtons();
         ApplyConfigValues();
     }
 
     private void Start() => SetupHp();
+
+    // ponytail: scenes already have named buttons; resolve if inspector refs are empty.
+    private void ResolveResultButtons()
+    {
+        Transform root = _resultPanel != null ? _resultPanel.transform : null;
+        if (_nextButton == null) _nextButton = FindResultChild(root, "NextButton");
+        if (_retryButton == null) _retryButton = FindResultChild(root, "RetryButton");
+        if (_reviveButton == null) _reviveButton = FindResultChild(root, "ReviveAdButton");
+        if (_doubleCoinsButton == null) _doubleCoinsButton = FindResultChild(root, "DoubleCoinsAdButton");
+    }
+
+    private static GameObject FindResultChild(Transform root, string name)
+    {
+        if (root == null) return GameObject.Find(name);
+        Transform t = root.Find(name);
+        return t != null ? t.gameObject : GameObject.Find(name);
+    }
 
     private void ApplyConfigValues()
     {
@@ -73,6 +97,7 @@ public class GameManager : MonoBehaviour
     public void SetupHp()
     {
         _isGameOver = false;
+        _campaignComplete = false;
         ApplyConfigValues();
         _playerHp = _playerStartHp;
         _enemyHp = _enemyStartHp;
@@ -125,22 +150,48 @@ public class GameManager : MonoBehaviour
     {
         _isGameOver = true;
         _playerWon = _enemyHp <= 0;
-        string result = _playerWon ? "Victory!" : "Defeated...";
+        int level = LevelManager.Instance != null ? LevelManager.Instance.CurrentLevel : 0;
+        _campaignComplete = _playerWon && LevelManager.Instance != null && LevelManager.Instance.IsFinalLevel;
+        _resultLayout = ResultScreenLayout.For(_playerWon, _campaignComplete, _coinsPerWin);
 
         _turnManager?.HideTurnText();
         _turnManager?.StopTimer();
 
-        if (_resultText) _resultText.text = result;
-        if (_resultPanel) _resultPanel.SetActive(true);
-        if (UIManager.Instance) UIManager.Instance.ShowResult();
+        ResolveResultButtons();
+        if (_resultText != null) _resultText.text = _resultLayout.Title ?? string.Empty;
+        ApplyResultButtons(_resultLayout);
+        if (_resultPanel != null) _resultPanel.SetActive(true);
+        UIManager.Instance?.ShowResult();
 
-        int level = LevelManager.Instance ? LevelManager.Instance.CurrentLevel : 0;
         if (_playerWon)
         {
             CurrencyWallet.Add(_coinsPerWin);
             LevelManager.Instance?.OnLevelWon();
         }
         Analytics.LevelEnd(level, _playerWon);
+    }
+
+    private void ApplyResultButtons(ResultScreenLayout layout)
+    {
+        // Optional UI: missing buttons just stay unresolved — never throw.
+        SetActive(_nextButton, layout.ShowNext);
+        SetActive(_retryButton, layout.ShowRetry);
+        SetActive(_reviveButton, layout.ShowRevive);
+        SetActive(_doubleCoinsButton, layout.ShowDoubleCoins);
+        SetButtonLabel(_nextButton, layout.NextLabel);
+        SetButtonLabel(_retryButton, layout.RetryLabel);
+    }
+
+    private static void SetActive(GameObject go, bool active)
+    {
+        if (go != null && go.activeSelf != active) go.SetActive(active);
+    }
+
+    private static void SetButtonLabel(GameObject button, string label)
+    {
+        if (button == null || string.IsNullOrEmpty(label)) return;
+        var tmp = button.GetComponentInChildren<TMP_Text>(true);
+        if (tmp != null) tmp.text = label;
     }
 
     // Mode select: 1 = vs AI, 2 = local duel.
@@ -222,6 +273,7 @@ public class GameManager : MonoBehaviour
         AdManager.Instance.ShowRewarded("revive", () =>
         {
             _isGameOver = false;
+            _campaignComplete = false;
             _playerHp = Mathf.Max(1, _playerStartHp / 2);
             UpdateHpUi();
             if (_resultPanel) _resultPanel.SetActive(false);
@@ -239,26 +291,49 @@ public class GameManager : MonoBehaviour
 
     public void OnRetryPressed()
     {
+        EnsureResultLayout();
         AdManager.Instance?.TryShowInterstitial("retry");
-        if (_resultPanel) _resultPanel.SetActive(false);
-        if (UIManager.Instance) UIManager.Instance.ShowGameplay();
+        if (_resultPanel != null) _resultPanel.SetActive(false);
+        UIManager.Instance?.ShowGameplay();
 
-        if (LevelManager.Instance != null) LevelManager.Instance.RetryLevel();
-        else ResetGame();
+        if (_resultLayout.RetryIsCampaignRestart && LevelManager.Instance != null)
+            LevelManager.Instance.RestartCampaign();
+        else if (LevelManager.Instance != null)
+            LevelManager.Instance.RetryLevel();
+        else
+            ResetGame();
 
+        _campaignComplete = false;
+        _isGameOver = false;
         _turnManager?.InitMatch(_selectedNumPlayers, _selectedDifficulty);
     }
 
     public void OnNextPressed()
     {
+        EnsureResultLayout();
+        if (_resultLayout.NextIsMenu)
+        {
+            FullResetAndGoToMainMenu();
+            return;
+        }
+
         AdManager.Instance?.TryShowInterstitial("next_level");
-        if (_resultPanel) _resultPanel.SetActive(false);
-        if (UIManager.Instance) UIManager.Instance.ShowGameplay();
+        if (_resultPanel != null) _resultPanel.SetActive(false);
+        UIManager.Instance?.ShowGameplay();
 
         if (LevelManager.Instance != null) LevelManager.Instance.NextLevel();
         else ResetGame();
 
+        _campaignComplete = false;
+        _isGameOver = false;
         _turnManager?.InitMatch(_selectedNumPlayers, _selectedDifficulty);
+    }
+
+    // Rebuild layout from current end-state if a button fires before ShowResult (or after domain reload).
+    private void EnsureResultLayout()
+    {
+        if (!string.IsNullOrEmpty(_resultLayout.Title)) return;
+        _resultLayout = ResultScreenLayout.For(_playerWon, _campaignComplete, _coinsPerWin);
     }
 
     public void FullResetAndGoToMainMenu()
@@ -266,11 +341,24 @@ public class GameManager : MonoBehaviour
         _selectedNumPlayers = 1;
         _selectedDifficulty = 0;
         _isGameOver = false;
+        _campaignComplete = false;
         SetupHp();
-        if (_resultPanel) _resultPanel.SetActive(false);
+        if (_resultPanel != null) _resultPanel.SetActive(false);
         _turnManager?.StopTimer();
         _turnManager?.HideTurnText();
         UIManager.Instance?.ShowMainMenu();
+    }
+
+    // Editor / SelfCheck: log gaps without crashing Play Mode.
+    public void LogMissingCriticalRefs()
+    {
+        ResolveResultButtons();
+        if (_resultPanel == null) Debug.LogWarning("GameManager: ResultPanel missing", this);
+        if (_resultText == null) Debug.LogWarning("GameManager: ResultText missing", this);
+        if (_nextButton == null) Debug.LogWarning("GameManager: NextButton missing", this);
+        if (_retryButton == null) Debug.LogWarning("GameManager: RetryButton missing", this);
+        if (_reviveButton == null) Debug.LogWarning("GameManager: ReviveAdButton missing", this);
+        if (_doubleCoinsButton == null) Debug.LogWarning("GameManager: DoubleCoinsAdButton missing", this);
     }
 
     public int PlayerHp => _playerHp;
@@ -282,6 +370,8 @@ public class GameManager : MonoBehaviour
     public int HealAmount => _healAmount;
     public bool IsGameOver => _isGameOver;
     public bool PlayerWon => _playerWon;
+    public bool CampaignComplete => _campaignComplete;
+    public int CoinsPerWin => _coinsPerWin;
 
     public void ResetGame()
     {

@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
 
     public int CurrentLevel { get; private set; } = 1;
     public LevelConfig Config { get; private set; }
+    public bool IsFinalLevel => CurrentLevel >= LevelProgression.TotalLevels;
 
     private void Awake()
     {
@@ -37,18 +38,37 @@ public class LevelManager : MonoBehaviour
     }
 
     // Called on a win: unlock the next level so returning players resume where they left off.
+    // Floor 20 stays at 20 — campaign complete is a UI state, not a level 21.
     public void OnLevelWon()
     {
-        int next = Mathf.Min(CurrentLevel + 1, LevelProgression.TotalLevels);
+        if (IsFinalLevel)
+        {
+            PlayerPrefs.SetInt(PrefKey, LevelProgression.TotalLevels);
+            PlayerPrefs.Save();
+            return;
+        }
+
+        int next = CurrentLevel + 1;
         PlayerPrefs.SetInt(PrefKey, next);
         PlayerPrefs.Save();
     }
 
-    public void NextLevel() => LoadLevel(Mathf.Min(CurrentLevel + 1, LevelProgression.TotalLevels));
+    public void NextLevel()
+    {
+        if (IsFinalLevel) return;
+        LoadLevel(CurrentLevel + 1);
+    }
 
     public void RetryLevel()
     {
         Analytics.Retry(CurrentLevel);
         LoadLevel(CurrentLevel);
+    }
+
+    public void RestartCampaign()
+    {
+        PlayerPrefs.SetInt(PrefKey, 1);
+        PlayerPrefs.Save();
+        LoadLevel(1);
     }
 }
