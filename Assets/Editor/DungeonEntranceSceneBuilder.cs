@@ -86,6 +86,10 @@ public static class DungeonEntranceSceneBuilder
         SetObjectField(gameManager, "_enemyHpSlider", ui.enemyHp);
         SetObjectField(gameManager, "_resultPanel", ui.resultPanel);
         SetObjectField(gameManager, "_resultText", ui.resultText);
+        SetObjectField(gameManager, "_nextButton", ui.nextButton.gameObject);
+        SetObjectField(gameManager, "_retryButton", ui.retryButton.gameObject);
+        SetObjectField(gameManager, "_reviveButton", ui.reviveButton.gameObject);
+        SetObjectField(gameManager, "_doubleCoinsButton", ui.doubleCoinsButton.gameObject);
 
         SetObjectField(windManager, "fillLeft", ui.windLeftFillRoot);
         SetObjectField(windManager, "fillRight", ui.windRightFillRoot);
