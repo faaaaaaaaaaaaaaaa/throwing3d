@@ -36,6 +36,10 @@ public static class SelfCheck
         // Lob throws must go up-toward the target, not into the floor.
         var lob = ThrowManager.ComputeLobDirection(new Vector3(5f, 1f, 0f), new Vector3(-5f, 1f, 0f), 38f);
         Debug.Assert(lob.y > 0.25f && lob.x < 0f, "SelfCheck: player lob should arc toward enemy");
+        Debug.Assert(Mathf.Approximately(ThrowManager.ApplyWindToThrowForce(4f, 0.5f, 1f, 1f), 4.5f),
+            "SelfCheck: tailwind should add wind force to throw power");
+        Debug.Assert(Mathf.Approximately(ThrowManager.ApplyWindToThrowForce(4f, 0.5f, -1f, 1f), 3.5f),
+            "SelfCheck: headwind should subtract wind force from throw power");
 
         // Hold-to-charge edges: press fires only on rising edge, release only on falling edge.
         ThrowManager.ChargeEdges(false, true, out bool b1, out bool e1);

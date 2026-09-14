@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3ada75d5a14bfc7479435d96f13b248e
+timeCreated: 1530583552
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 122084
+  packageName: POLYGON MINI - Fantasy Character Pack - Art by Synty
+  packageVersion: 1.7.1
+  assetPath: Assets/Synty/PolygonMiniFantasyCharacters/Prefabs/Characters/SM_Chr_Dungeon_SkeletonSoldier_01.prefab
+  uploadId: 976042

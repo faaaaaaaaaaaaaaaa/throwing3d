@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4e2cf93d7c555f94c8d0cfa3d264cb26
+timeCreated: 1530583560
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 122084
+  packageName: POLYGON MINI - Fantasy Character Pack - Art by Synty
+  packageVersion: 1.7.1
+  assetPath: Assets/Synty/PolygonMiniFantasyCharacters/Prefabs/Characters/SM_Chr_Knights_Soldier_01.prefab
+  uploadId: 976042

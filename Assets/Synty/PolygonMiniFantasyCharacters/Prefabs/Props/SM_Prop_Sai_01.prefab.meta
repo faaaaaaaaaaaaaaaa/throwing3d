@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b34ad1aebff90cd4bba6bf6c3e4db10b
+timeCreated: 1530585748
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 122084
+  packageName: POLYGON MINI - Fantasy Character Pack - Art by Synty
+  packageVersion: 1.7.1
+  assetPath: Assets/Synty/PolygonMiniFantasyCharacters/Prefabs/Props/SM_Prop_Sai_01.prefab
+  uploadId: 976042

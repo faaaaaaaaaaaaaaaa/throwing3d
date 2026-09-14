@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e754fc27989b55644b3671f714122224
+timeCreated: 1530580519
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 122084
+  packageName: POLYGON MINI - Fantasy Character Pack - Art by Synty
+  packageVersion: 1.7.1
+  assetPath: Assets/Synty/PolygonMiniFantasyCharacters/Materials/PolygonMiniFantasyCharacters_01_C.mat
+  uploadId: 976042

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f753fc2d58806f4409de6f388ccc0c1b
+timeCreated: 1530750401
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 122084
+  packageName: POLYGON MINI - Fantasy Character Pack - Art by Synty
+  packageVersion: 1.7.1
+  assetPath: Assets/Synty/PolygonMiniFantasyCharacters/Prefabs/Props/SM_Prop_ShieldHalf_01.prefab
+  uploadId: 976042
