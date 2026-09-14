@@ -150,17 +150,18 @@ public class GameManager : MonoBehaviour
     {
         _isGameOver = true;
         _playerWon = _enemyHp <= 0;
-        int level = LevelManager.Instance ? LevelManager.Instance.CurrentLevel : 0;
+        int level = LevelManager.Instance != null ? LevelManager.Instance.CurrentLevel : 0;
         _campaignComplete = _playerWon && LevelManager.Instance != null && LevelManager.Instance.IsFinalLevel;
         _resultLayout = ResultScreenLayout.For(_playerWon, _campaignComplete, _coinsPerWin);
 
         _turnManager?.HideTurnText();
         _turnManager?.StopTimer();
 
-        if (_resultText) _resultText.text = _resultLayout.Title;
+        ResolveResultButtons();
+        if (_resultText != null) _resultText.text = _resultLayout.Title ?? string.Empty;
         ApplyResultButtons(_resultLayout);
-        if (_resultPanel) _resultPanel.SetActive(true);
-        if (UIManager.Instance) UIManager.Instance.ShowResult();
+        if (_resultPanel != null) _resultPanel.SetActive(true);
+        UIManager.Instance?.ShowResult();
 
         if (_playerWon)
         {
@@ -172,6 +173,7 @@ public class GameManager : MonoBehaviour
 
     private void ApplyResultButtons(ResultScreenLayout layout)
     {
+        // Optional UI: missing buttons just stay unresolved — never throw.
         SetActive(_nextButton, layout.ShowNext);
         SetActive(_retryButton, layout.ShowRetry);
         SetActive(_reviveButton, layout.ShowRevive);
@@ -289,9 +291,10 @@ public class GameManager : MonoBehaviour
 
     public void OnRetryPressed()
     {
+        EnsureResultLayout();
         AdManager.Instance?.TryShowInterstitial("retry");
-        if (_resultPanel) _resultPanel.SetActive(false);
-        if (UIManager.Instance) UIManager.Instance.ShowGameplay();
+        if (_resultPanel != null) _resultPanel.SetActive(false);
+        UIManager.Instance?.ShowGameplay();
 
         if (_resultLayout.RetryIsCampaignRestart && LevelManager.Instance != null)
             LevelManager.Instance.RestartCampaign();
@@ -301,11 +304,13 @@ public class GameManager : MonoBehaviour
             ResetGame();
 
         _campaignComplete = false;
+        _isGameOver = false;
         _turnManager?.InitMatch(_selectedNumPlayers, _selectedDifficulty);
     }
 
     public void OnNextPressed()
     {
+        EnsureResultLayout();
         if (_resultLayout.NextIsMenu)
         {
             FullResetAndGoToMainMenu();
@@ -313,14 +318,22 @@ public class GameManager : MonoBehaviour
         }
 
         AdManager.Instance?.TryShowInterstitial("next_level");
-        if (_resultPanel) _resultPanel.SetActive(false);
-        if (UIManager.Instance) UIManager.Instance.ShowGameplay();
+        if (_resultPanel != null) _resultPanel.SetActive(false);
+        UIManager.Instance?.ShowGameplay();
 
         if (LevelManager.Instance != null) LevelManager.Instance.NextLevel();
         else ResetGame();
 
         _campaignComplete = false;
+        _isGameOver = false;
         _turnManager?.InitMatch(_selectedNumPlayers, _selectedDifficulty);
+    }
+
+    // Rebuild layout from current end-state if a button fires before ShowResult (or after domain reload).
+    private void EnsureResultLayout()
+    {
+        if (!string.IsNullOrEmpty(_resultLayout.Title)) return;
+        _resultLayout = ResultScreenLayout.For(_playerWon, _campaignComplete, _coinsPerWin);
     }
 
     public void FullResetAndGoToMainMenu()
@@ -330,10 +343,22 @@ public class GameManager : MonoBehaviour
         _isGameOver = false;
         _campaignComplete = false;
         SetupHp();
-        if (_resultPanel) _resultPanel.SetActive(false);
+        if (_resultPanel != null) _resultPanel.SetActive(false);
         _turnManager?.StopTimer();
         _turnManager?.HideTurnText();
         UIManager.Instance?.ShowMainMenu();
+    }
+
+    // Editor / SelfCheck: log gaps without crashing Play Mode.
+    public void LogMissingCriticalRefs()
+    {
+        ResolveResultButtons();
+        if (_resultPanel == null) Debug.LogWarning("GameManager: ResultPanel missing", this);
+        if (_resultText == null) Debug.LogWarning("GameManager: ResultText missing", this);
+        if (_nextButton == null) Debug.LogWarning("GameManager: NextButton missing", this);
+        if (_retryButton == null) Debug.LogWarning("GameManager: RetryButton missing", this);
+        if (_reviveButton == null) Debug.LogWarning("GameManager: ReviveAdButton missing", this);
+        if (_doubleCoinsButton == null) Debug.LogWarning("GameManager: DoubleCoinsAdButton missing", this);
     }
 
     public int PlayerHp => _playerHp;

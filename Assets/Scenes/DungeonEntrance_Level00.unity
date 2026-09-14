@@ -5372,6 +5372,10 @@ MonoBehaviour:
   _enemyHpSlider: {fileID: 1601705440}
   _resultPanel: {fileID: 43824572}
   _resultText: {fileID: 1523928512}
+  _nextButton: {fileID: 126159215}
+  _retryButton: {fileID: 488297833}
+  _reviveButton: {fileID: 800680586}
+  _doubleCoinsButton: {fileID: 780973595}
   _turnManager: {fileID: 1016819297}
   _itemManager: {fileID: 1016819296}
 --- !u!114 &1016819296

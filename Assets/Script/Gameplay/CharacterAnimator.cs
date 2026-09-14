@@ -55,6 +55,8 @@ public class CharacterAnimator : MonoBehaviour
 
         while (elapsed < timeout)
         {
+            if (_animator == null) yield break;
+
             AnimatorStateInfo state = _animator.GetCurrentAnimatorStateInfo(layer);
             if (state.shortNameHash == ThrowState &&
                 state.normalizedTime >= _throwReleaseNormalizedTime)

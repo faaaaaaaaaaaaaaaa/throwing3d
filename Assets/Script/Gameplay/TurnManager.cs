@@ -124,6 +124,12 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator DoubleAttackSequence(bool isPlayer, float power01)
     {
+        if (_throwManager == null)
+        {
+            OnItemResolved();
+            yield break;
+        }
+
         bool done = false;
         _throwManager.ThrowCharged(isPlayer, power01, "DoubleAttack", () => done = true);
         yield return new WaitUntil(() => done);
@@ -161,7 +167,8 @@ public class TurnManager : MonoBehaviour
         float t = 0f;
         while (t < think)
         {
-            if (!IsSameTurn(isPlayer) || GameManager.Instance.IsGameOver) yield break;
+            if (!IsSameTurn(isPlayer) || GameManager.Instance == null || GameManager.Instance.IsGameOver)
+                yield break;
             t += Time.deltaTime;
             yield return null;
         }
@@ -170,7 +177,7 @@ public class TurnManager : MonoBehaviour
         t = 0f;
         while (t < warn)
         {
-            if (!IsSameTurn(isPlayer) || GameManager.Instance.IsGameOver)
+            if (!IsSameTurn(isPlayer) || GameManager.Instance == null || GameManager.Instance.IsGameOver)
             {
                 _powerBarUI?.HideTimeWarnings();
                 yield break;
@@ -222,6 +229,12 @@ public class TurnManager : MonoBehaviour
         }
 
         IsWaitingForHit = true;
+        if (_throwManager == null)
+        {
+            OnItemResolved();
+            yield break;
+        }
+
         if (special == "DoubleAttack")
             yield return StartCoroutine(DoubleAttackSequence(false, aiPower));
         else

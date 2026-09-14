@@ -155,6 +155,7 @@ public class ThrowManager : MonoBehaviour
 
         if (_chargeAreas == null || _chargeAreas.Length == 0)
             RefreshChargeAreas();
+        if (_chargeAreas == null) return false;
 
         foreach (PowerChargeArea area in _chargeAreas)
         {
@@ -202,6 +203,12 @@ public class ThrowManager : MonoBehaviour
         bool isPlayer = _chargingAsPlayer;
         if (isPlayer) _powerBarUI?.ShowHumanPowerBar(false);
         else _powerBarUI?.ShowZombiePowerBar(false);
+
+        if (TurnManager.Instance == null)
+        {
+            Debug.LogWarning("ThrowManager: TurnManager missing; charge discarded.", this);
+            return;
+        }
         TurnManager.Instance.OnPowerConfirmed(power, isPlayer);
     }
 
@@ -250,7 +257,8 @@ public class ThrowManager : MonoBehaviour
         Action onResolved,
         CharacterAnimator characterAnimator)
     {
-        yield return characterAnimator.WaitForThrowRelease();
+        if (characterAnimator != null)
+            yield return characterAnimator.WaitForThrowRelease();
         ReleaseProjectile(isPlayer, power01, specialType, onResolved, characterAnimator);
     }
 
@@ -270,16 +278,15 @@ public class ThrowManager : MonoBehaviour
         ResolveSceneReferences();
         Transform spawnPoint = ResolveSpawnPoint(isPlayer, characterAnimator);
         Transform targetPoint = ResolveAimPoint(isPlayer);
-        GameObject[] prefabs = GetPrefabsForSide(isPlayer);
-        if (spawnPoint == null || targetPoint == null || prefabs == null || prefabs.Length == 0)
+        GameObject prefab = PickPrefab(GetPrefabsForSide(isPlayer));
+        if (spawnPoint == null || targetPoint == null || prefab == null)
         {
-            Debug.LogWarning("ThrowManager: missing throw points or throwable prefabs.");
+            Debug.LogWarning("ThrowManager: missing throw points or throwable prefabs (check LFS / Inspector).", this);
             onResolved?.Invoke();
             return;
         }
 
         string ownerTag = isPlayer ? _playerTag : _enemyTag;
-        GameObject prefab = prefabs[UnityEngine.Random.Range(0, prefabs.Length)];
         GameObject item = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
 
         float maxForce = _maxThrowPower;
@@ -326,22 +333,53 @@ public class ThrowManager : MonoBehaviour
     private GameObject[] GetPrefabsForSide(bool isPlayer)
     {
         GameObject[] own = isPlayer ? _humanItemPrefabs : _zombieItemPrefabs;
-        if (own != null && own.Length > 0) return own;
+        if (HasUsablePrefab(own)) return own;
 
         // ponytail: while there are only a few throwables authored, the empty side reuses the
         // other side's pool. Upgrade path: split to side-specific pools once art choices settle.
         GameObject[] fallback = isPlayer ? _zombieItemPrefabs : _humanItemPrefabs;
-        return fallback != null && fallback.Length > 0 ? fallback : own;
+        return HasUsablePrefab(fallback) ? fallback : own;
+    }
+
+    // LFS / incomplete checkout can leave null slots in the prefab array — never Instantiate those.
+    public static GameObject PickPrefab(GameObject[] prefabs)
+    {
+        if (prefabs == null || prefabs.Length == 0) return null;
+
+        int usable = 0;
+        for (int i = 0; i < prefabs.Length; i++)
+            if (prefabs[i] != null) usable++;
+        if (usable == 0) return null;
+
+        int pick = UnityEngine.Random.Range(0, usable);
+        for (int i = 0; i < prefabs.Length; i++)
+        {
+            if (prefabs[i] == null) continue;
+            if (pick == 0) return prefabs[i];
+            pick--;
+        }
+        return null;
+    }
+
+    private static bool HasUsablePrefab(GameObject[] prefabs)
+    {
+        if (prefabs == null) return false;
+        for (int i = 0; i < prefabs.Length; i++)
+            if (prefabs[i] != null) return true;
+        return false;
     }
 
     private static ProjectileItem EnsureProjectileItem(GameObject item)
     {
+        if (item == null) return null;
         var projectile = item.GetComponent<ProjectileItem>();
         return projectile != null ? projectile : item.AddComponent<ProjectileItem>();
     }
 
     private Rigidbody EnsureRigidbody(GameObject item)
     {
+        if (item == null) return null;
+
         var rb = item.GetComponent<Rigidbody>();
         if (rb == null) rb = item.AddComponent<Rigidbody>();
 
