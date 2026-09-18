@@ -1,0 +1,43 @@
+name: Feature
+description: New gameplay/UI/system work
+title: "[Feature] "
+labels: ["type: feature"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What do we want to add?
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Behavior, constraints, references
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Works in play mode
+        - [ ] No Console errors
+        - [ ] Retry / next level still work
+    validations:
+      required: true
+  - type: textarea
+    id: refs
+    attributes:
+      label: Screenshots / References
