@@ -1,0 +1,35 @@
+name: Level
+description: Create or tune a floor/level
+title: "[Level] "
+labels: ["type: feature", "area: level"]
+body:
+  - type: input
+    id: level
+    attributes:
+      label: Level number
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Config
+      value: |
+        - HP:
+        - Wind:
+        - Enemy:
+        - Reward:
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ] Duplicate/template scene
+        - [ ] Place props
+        - [ ] Tune difficulty
+        - [ ] Test clear/fail loop
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / Screenshots
